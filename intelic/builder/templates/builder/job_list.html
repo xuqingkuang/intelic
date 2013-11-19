@@ -1,0 +1,16 @@
+{% extends "builder/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block content %}
+<ul class="object-tools pull-right">
+    <li>
+        <a href="{% url "job_create" %}" class="addlink btn btn-primary">
+            {% trans "Add new job" %}
+        </a>
+    </li>
+</ul>
+<h1>The page is not implementated yet.</h1>
+{% endblock %}

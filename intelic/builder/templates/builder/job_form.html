@@ -1,0 +1,92 @@
+{% extends "builder/base_site.html" %}
+{% load i18n admin_static bootstrap %}
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+<li><a href="{% url 'job_list' %}">{% trans 'Job list' %}</a> <span class="divider">/</span></li>
+<li>{% trans 'New job' %}</a>
+</ul>
+{% endblock %}
+
+{% block content %}
+<form action="." method="POST" class="form-horizontal">
+    {% csrf_token %}
+    <fieldset>
+        <legend>{% trans "Config" %}</legend>
+        {{ form|bootstrap }}
+    </fieldset>
+    <fieldset id="componentContainer" style="display: none;">
+        <legend>{% trans "Component" %}</legend>
+    </fieldset>
+    <div class="control-group">
+        <div class="controls">
+            <input type="submit" value="Create" class="btn btn-primary" />
+            <input type="reset" value="Default" class="btn disabled" />
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block js_footer %}
+<script type="text/javascript" charset="utf-8">
+    var $containerComponent = $('#componentContainer'),
+        $titleComponent = $containerComponent.find('legend');
+
+    $('#id_baseline').change(function(e) {
+        if ($(this).val() == '')
+            return false;
+        
+        var query = {
+            'baseline__pk': $(this).val(),
+        };
+        var queryJSON = JSON.stringify(query);
+        
+        $.ajax({
+            'url': '{% url "builder_api_get_product" %}',
+            'method': 'GET',
+            'dataType': 'json',
+            'data': {
+                'q': queryJSON,
+            },
+            'success': function(returnObj) {
+                var $selectProduct = $('#id_product');
+                // Clean old data
+                $selectProduct.html($('<option value="">---------</option>'));
+                $containerComponent.html('');
+                $containerComponent.append($titleComponent);
+                $containerComponent.hide();
+
+                // Append new data
+                for (var i=0; i<returnObj.length; i++) {
+                    $('<option>')
+                        .attr({
+                            'value': returnObj[i]['pk']
+                        })
+                        .text(returnObj[i]['fields']['name'])
+                        .appendTo($selectProduct);
+                }
+            }
+        });
+    });
+    
+    $('#id_product').change(function(e) {
+        $.ajax({
+            'url': '{% url "builder_api_get_components_form" %}',
+            'method': 'GET',
+            'dataType': 'html',
+            'data': {
+                'baseline_pk': $('#id_baseline').val(),
+                'product_pk': $(this).val()
+            },
+            'success': function(html) {
+                $containerComponent.html(html);
+                $containerComponent.prepend($titleComponent);
+                $containerComponent.show();
+            },
+            'failure': function(msg) {
+                alert(msg);
+            }
+        });
+    });
+</script>
+{% endblock %}

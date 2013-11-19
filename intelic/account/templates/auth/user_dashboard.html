@@ -1,0 +1,20 @@
+{% extends "builder/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block nav-global %}
+<div class="nav-collapse collapse">
+    <ul class="nav">
+        <li class="active"><a href="{% url "account_dashboard" %}">{% trans "Dashboard" %}</a></li>
+        <li><a href="{% url "job_list" %}">{% trans "Job list" %}</a></li>
+        {% if user.is_staff %}<li><a href="{% url "admin:index" %}">{% trans "Admin" %}</a></li>{% endif %}
+    </ul>
+</div>
+{% endblock %}
+
+{% block content %}
+<h1>The page is not implementated yet.</h1>
+
+{% endblock %}

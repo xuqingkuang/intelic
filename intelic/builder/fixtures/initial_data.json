@@ -1,0 +1,240 @@
+[
+{
+    "pk": 1, 
+    "model": "builder.formclass", 
+    "fields": {
+        "name": "BaseJobComponentForm", 
+        "slug": "basejobcomponentform"
+    }
+},
+{
+    "pk": 1, 
+    "model": "builder.baseline", 
+    "fields": {
+        "git_repo": "", 
+        "is_active": true, 
+        "name": "ww41", 
+        "slug": "ww41"
+    }
+},
+{
+    "pk": 2, 
+    "model": "builder.baseline", 
+    "fields": {
+        "git_repo": "", 
+        "is_active": true, 
+        "name": "ww42", 
+        "slug": "ww42"
+    }
+},
+{
+    "pk": 3, 
+    "model": "builder.baseline", 
+    "fields": {
+        "git_repo": "", 
+        "is_active": true, 
+        "name": "ww43", 
+        "slug": "ww43"
+    }
+},
+{
+    "pk": 1, 
+    "model": "builder.product", 
+    "fields": {
+        "baseline": [
+            1, 
+            3
+        ], 
+        "is_active": true, 
+        "name": "SALTRAY", 
+        "form_class": 1, 
+        "slug": "saltray", 
+        "git_repo": ""
+    }
+},
+{
+    "pk": 2, 
+    "model": "builder.product", 
+    "fields": {
+        "baseline": [
+            2, 
+            3
+        ], 
+        "is_active": true, 
+        "name": "RAYLAKE", 
+        "form_class": 1, 
+        "slug": "raylake", 
+        "git_repo": ""
+    }
+},
+{
+    "pk": 1, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": "WIFI", 
+        "slug": "wifi"
+    }
+},
+{
+    "pk": 2, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": "Touch", 
+        "slug": "touch"
+    }
+},
+{
+    "pk": 3, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": "Display", 
+        "slug": "display"
+    }
+},
+{
+    "pk": 4, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": "Audio", 
+        "slug": "audio"
+    }
+},
+{
+    "pk": 5, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": "Camera", 
+        "slug": "camera"
+    }
+},
+{
+    "pk": 6, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": "Sensor", 
+        "slug": "sensor"
+    }
+},
+{
+    "pk": 1, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            1, 
+            2
+        ], 
+        "name": "BCM43340", 
+        "baseline": [
+            1, 
+            2, 
+            3
+        ], 
+        "is_active": true, 
+        "source": "", 
+        "type": 1, 
+        "slug": "wifi-bcm43340", 
+        "git_repo": ""
+    }
+},
+{
+    "pk": 2, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            1, 
+            2
+        ], 
+        "name": "FT5506", 
+        "baseline": [
+            1, 
+            2, 
+            3
+        ], 
+        "is_active": true, 
+        "source": "", 
+        "type": 2, 
+        "slug": "touch-ft5506", 
+        "git_repo": ""
+    }
+},
+{
+    "pk": 3, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            2
+        ], 
+        "name": "10\"", 
+        "baseline": [
+            1, 
+            2, 
+            3
+        ], 
+        "is_active": true, 
+        "source": "", 
+        "type": 3, 
+        "slug": "display-10", 
+        "git_repo": ""
+    }
+},
+{
+    "pk": 4, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            2
+        ], 
+        "name": "ALC5642", 
+        "baseline": [
+            1, 
+            2, 
+            3
+        ], 
+        "is_active": true, 
+        "source": "", 
+        "type": 4, 
+        "slug": "audio-alc5642", 
+        "git_repo": ""
+    }
+},
+{
+    "pk": 5, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            2
+        ], 
+        "name": "OV5693", 
+        "baseline": [
+            1, 
+            2, 
+            3
+        ], 
+        "is_active": true, 
+        "source": "", 
+        "type": 5, 
+        "slug": "camera-ov5693", 
+        "git_repo": ""
+    }
+},
+{
+    "pk": 6, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            2
+        ], 
+        "name": "MPU-6500", 
+        "baseline": [
+            1, 
+            2, 
+            3
+        ], 
+        "is_active": true, 
+        "source": "", 
+        "type": 6, 
+        "slug": "sensor-mpu-6500", 
+        "git_repo": ""
+    }
+}
+]

@@ -1,0 +1,24 @@
+{% extends "admin/base.html" %}
+{% load static i18n %}
+
+{% block title %}{{ title }} | {% trans 'Intel IC Admin' %}{% endblock %}
+
+{% block branding %}
+    <a href="{% url 'admin:index' %}" class="brand" id="site-name">{% trans 'Intel IC' %}</a>
+{% endblock %}
+
+{% block extrahead %}
+<style type="text/css" media="screen">
+.navbar-inverse { color: #999; }
+</style>
+{% endblock %}
+
+{% block nav-global %}
+<div class="nav-collapse collapse">
+    <ul class="nav">
+        <li><a href="{% url "account_dashboard" %}">{% trans "Dashboard" %}</a></li>
+        <li><a href="{% url "job_list" %}">{% trans "Job list" %}</a></li>
+        {% if user.is_staff %}<li class="active"><a href="{% url "admin:index" %}">{% trans "Admin" %}</a></li>{% endif %}
+    </ul>
+</div>
+{% endblock %}
