@@ -1,25 +1,60 @@
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView
+from django.views.generic.detail import DetailView
+from django.http import HttpResponseRedirect 
 from django.utils.translation import ugettext as _
 from intelic.account.views import LoginRequiredMixin
 
 import models, forms
 
-# Create your views here.
-
-class JobListView(LoginRequiredMixin, ListView):
-    model = models.Job
-    template_name = 'builder/job_list.html'
-    title = _('Job list')
+class TitleMixin(object):
+    def set_title(self, title):
+        self.title = title
 
     def get_context_data(self, **kwargs):
-        context = super(JobListView, self).get_context_data(**kwargs)
-        context['title'] = _('Job list')
-        # TODO: Completed related items field
+        context = super(TitleMixin, self).get_context_data(**kwargs)
+        if getattr(self, 'title'):
+            context['title'] = self.title
         return context
 
+# Create your views here.
 
-class JobCreateView(LoginRequiredMixin, CreateView):
-    model = models.Job
-    title = _('Job create')
-    form_class = forms.JobCreateModelForm
+class BuildListView(LoginRequiredMixin, TitleMixin, ListView):
+    model = models.Build
+    title = _('Build list')
+
+class BuildCreateView(LoginRequiredMixin, TitleMixin, CreateView):
+    model = models.Build
+    title = _('Build create')
+    form_class = forms.BuildCreateModelForm
+
+    def get_form(self, form_class):
+        form = super(BuildCreateView, self).get_form(form_class)
+        if self.request.method == "POST":
+            form.update_by_baseline(baseline = self.request.REQUEST['baseline'])
+        return form
+
+    def form_valid(self, form):
+        """
+        Add the extra component to the build
+        """
+        self.object = form.save() 
+        component_form_class = getattr(forms, self.object.product.form_class.name)
+        component_form = component_form_class(
+            self.request.POST,
+            init_baseline = self.object.baseline,
+            init_product = self.object.product,
+        )
+        if component_form.is_valid():
+            component_form.save(build_instance=self.object)
+            return HttpResponseRedirect(self.get_success_url())
+        return self.form_invalid(component_form)
+
+class BuildDetailView(LoginRequiredMixin, TitleMixin, DetailView):
+    model = models.Build
+    
+    def get_object(self, queryset=None):
+        obj = super(BuildDetailView, self).get_object(queryset)
+        self.set_title(obj.name)
+        return obj
+    

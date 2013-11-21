@@ -17,7 +17,7 @@
 <div class="nav-collapse collapse">
     <ul class="nav">
         <li><a href="{% url "account_dashboard" %}">{% trans "Dashboard" %}</a></li>
-        <li><a href="{% url "job_list" %}">{% trans "Job list" %}</a></li>
+        <li><a href="{% url "build_list" %}">{% trans "Build list" %}</a></li>
         {% if user.is_staff %}<li class="active"><a href="{% url "admin:index" %}">{% trans "Admin" %}</a></li>{% endif %}
     </ul>
 </div>

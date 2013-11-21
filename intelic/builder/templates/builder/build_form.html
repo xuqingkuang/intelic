@@ -3,8 +3,8 @@
 
 {% block breadcrumbs %}
 <ul class="breadcrumb">
-<li><a href="{% url 'job_list' %}">{% trans 'Job list' %}</a> <span class="divider">/</span></li>
-<li>{% trans 'New job' %}</a>
+<li><a href="{% url 'build_list' %}">{% trans 'Build list' %}</a> <span class="divider">/</span></li>
+<li>{% trans 'New build' %}</li>
 </ul>
 {% endblock %}
 
@@ -16,7 +16,7 @@
         {{ form|bootstrap }}
     </fieldset>
     <fieldset id="componentContainer" style="display: none;">
-        <legend>{% trans "Component" %}</legend>
+        <legend>{% trans "Components" %}</legend>
     </fieldset>
     <div class="control-group">
         <div class="controls">

@@ -3,38 +3,18 @@
     "pk": 1, 
     "model": "builder.formclass", 
     "fields": {
-        "name": "BaseJobComponentForm", 
-        "slug": "basejobcomponentform"
+        "name": "BaseBuildComponentForm", 
+        "slug": "basebuildcomponentform"
     }
 },
 {
     "pk": 1, 
     "model": "builder.baseline", 
     "fields": {
-        "git_repo": "", 
+        "desc": "", 
         "is_active": true, 
-        "name": "ww41", 
-        "slug": "ww41"
-    }
-},
-{
-    "pk": 2, 
-    "model": "builder.baseline", 
-    "fields": {
-        "git_repo": "", 
-        "is_active": true, 
-        "name": "ww42", 
-        "slug": "ww42"
-    }
-},
-{
-    "pk": 3, 
-    "model": "builder.baseline", 
-    "fields": {
-        "git_repo": "", 
-        "is_active": true, 
-        "name": "ww43", 
-        "slug": "ww43"
+        "name": "ww34_falcon_base", 
+        "slug": "ww34_falcon_base"
     }
 },
 {
@@ -42,29 +22,13 @@
     "model": "builder.product", 
     "fields": {
         "baseline": [
-            1, 
-            3
+            1
         ], 
         "is_active": true, 
-        "name": "SALTRAY", 
+        "name": "baylake", 
         "form_class": 1, 
-        "slug": "saltray", 
-        "git_repo": ""
-    }
-},
-{
-    "pk": 2, 
-    "model": "builder.product", 
-    "fields": {
-        "baseline": [
-            2, 
-            3
-        ], 
-        "is_active": true, 
-        "name": "RAYLAKE", 
-        "form_class": 1, 
-        "slug": "raylake", 
-        "git_repo": ""
+        "slug": "baylake", 
+        "desc": ""
     }
 },
 {
@@ -116,24 +80,38 @@
     }
 },
 {
+    "pk": 7, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": "Power", 
+        "slug": "power"
+    }
+},
+{
+    "pk": 8, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": "I2C", 
+        "slug": "i2c"
+    }
+},
+{
     "pk": 1, 
     "model": "builder.component", 
     "fields": {
         "product": [
-            1, 
-            2
+            1
         ], 
-        "name": "BCM43340", 
+        "name": "audio_patches", 
         "baseline": [
-            1, 
-            2, 
-            3
+            1
         ], 
         "is_active": true, 
         "source": "", 
-        "type": 1, 
-        "slug": "wifi-bcm43340", 
-        "git_repo": ""
+        "gerrit_url": "http://192.168.30.102:8080/#/c/5/", 
+        "type": 4, 
+        "slug": "audio-audio_patches", 
+        "desc": ""
     }
 },
 {
@@ -141,20 +119,18 @@
     "model": "builder.component", 
     "fields": {
         "product": [
-            1, 
-            2
+            1
         ], 
-        "name": "FT5506", 
+        "name": "touch-device patch", 
         "baseline": [
-            1, 
-            2, 
-            3
+            1
         ], 
         "is_active": true, 
         "source": "", 
+        "gerrit_url": "http://192.168.30.102:8080/#/c/6/", 
         "type": 2, 
-        "slug": "touch-ft5506", 
-        "git_repo": ""
+        "slug": "touch-touch-device-patch", 
+        "desc": ""
     }
 },
 {
@@ -162,19 +138,18 @@
     "model": "builder.component", 
     "fields": {
         "product": [
-            2
+            1
         ], 
-        "name": "10\"", 
+        "name": "touch-kernel patch", 
         "baseline": [
-            1, 
-            2, 
-            3
+            1
         ], 
         "is_active": true, 
         "source": "", 
-        "type": 3, 
-        "slug": "display-10", 
-        "git_repo": ""
+        "gerrit_url": "http://192.168.30.102:8080/#/c/4/", 
+        "type": 2, 
+        "slug": "touch-touch-kernel-patch", 
+        "desc": ""
     }
 },
 {
@@ -182,19 +157,18 @@
     "model": "builder.component", 
     "fields": {
         "product": [
-            2
+            1
         ], 
-        "name": "ALC5642", 
+        "name": "charger_fuelgauge_patches", 
         "baseline": [
-            1, 
-            2, 
-            3
+            1
         ], 
         "is_active": true, 
         "source": "", 
-        "type": 4, 
-        "slug": "audio-alc5642", 
-        "git_repo": ""
+        "gerrit_url": "http://192.168.30.102:8080/#/c/7/", 
+        "type": 7, 
+        "slug": "power-charger_fuelgauge_patches", 
+        "desc": ""
     }
 },
 {
@@ -202,39 +176,18 @@
     "model": "builder.component", 
     "fields": {
         "product": [
-            2
+            1
         ], 
-        "name": "OV5693", 
+        "name": "edp_to_bridge_patches", 
         "baseline": [
-            1, 
-            2, 
-            3
+            1
         ], 
         "is_active": true, 
         "source": "", 
-        "type": 5, 
-        "slug": "camera-ov5693", 
-        "git_repo": ""
-    }
-},
-{
-    "pk": 6, 
-    "model": "builder.component", 
-    "fields": {
-        "product": [
-            2
-        ], 
-        "name": "MPU-6500", 
-        "baseline": [
-            1, 
-            2, 
-            3
-        ], 
-        "is_active": true, 
-        "source": "", 
-        "type": 6, 
-        "slug": "sensor-mpu-6500", 
-        "git_repo": ""
+        "gerrit_url": "http://192.168.30.102:8080/#/c/8/", 
+        "type": 8, 
+        "slug": "i2c-edp_to_bridge_patches", 
+        "desc": ""
     }
 }
 ]

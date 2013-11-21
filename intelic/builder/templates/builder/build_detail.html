@@ -1,0 +1,64 @@
+{% extends "builder/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+<li><a href="{% url 'build_list' %}">{% trans 'Build list' %}</a> <span class="divider">/</span></li>
+<li>{{ build.name }}</li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <fieldset>
+        <legend>{% trans "Config" %}</legend>
+        <div class="row-fluid">
+            <div class="span3">{% trans "Baseline" %}</div>
+            <div class="span9">{{ build.baseline }}</div>
+        </div>
+        <div class="row-fluid">
+            <div class="span3">{% trans "Product" %}</div>
+            <div class="span9">{{ build.product }}</div>
+        </div>
+        <div class="row-fluid">
+            <div class="span3">{% trans "Status" %}</div>
+            <div class="span9">
+                {% ifequal build.status "building" %}
+                Building {{ build.progress }}%
+                {% else %}
+                {{ build.status|default:"In queue" }}
+                {% endifequal %}
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span3">{% trans "Message" %}</div>
+            <div class="span9">{{ build.message }}</div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>{% trans "Components" %}</legend>
+        {% for component in build.component.all %}
+        <div class="row-fluid">
+            <div class="span3">{{ component.type }}</div>
+            <div class="span9">{{ component}}</div>
+        </div>
+        {% empty %}
+        <div class="row-fluid text-center">
+            {% trans "No component selected" %}
+        </div>
+        {% endfor %}
+    </fieldset>
+    <fieldset>
+        <legend>{% trans "URLs" %}</legend>
+        {% for url in build.url_set.all %}
+        <div class="row-fluid">
+            <div class="span3">{{ url.type }}</div>
+            <div class="span9">{{ url }}</div>
+        </div>
+        {% empty %}
+        <div class="row-fluid text-center">
+            {% trans "No url was found yet." %}
+        </div>
+        {% endfor %}
+</div>
+{% endblock %}

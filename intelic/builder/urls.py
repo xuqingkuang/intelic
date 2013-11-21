@@ -8,9 +8,11 @@ from django.contrib.auth.urls import patterns, url
 import views, apis
 
 urlpatterns = patterns('',
-    url(r'^job-list/$', views.JobListView.as_view(), name='job_list'),
-    url(r'^new-job/$', views.JobCreateView.as_view(), name='job_create'),
-    
+    url(r'^build-list/$', views.BuildListView.as_view(), name='build_list'),
+    url(r'^new-build/$', views.BuildCreateView.as_view(), name='build_create'),
+    url(r'^new-build/$', views.BuildCreateView.as_view(), name='build_create'),
+    url(r'^build/(?P<slug>[-\w]+)/$', views.BuildDetailView.as_view(), name='build_detail'),
+
     url(r'apis/get-products/', apis.get_products, name='builder_api_get_product'),
     url(r'apis/get-components-form/', apis.get_components_form, name='builder_api_get_components_form'),
 )
