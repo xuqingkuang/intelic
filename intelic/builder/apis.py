@@ -5,12 +5,12 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 import models, forms
 
-def get_products(request):
-    products = models.Product.objects.all()
+def get_baselines(request):
+    baselines = models.Baseline.objects.all()
     if request.REQUEST.get('q'):
         query = simplejson.loads(request.REQUEST['q'])
-        products = products.filter(**query)
-    return HttpResponse(serializers.serialize("json", products))
+        baselines = baselines.filter(**query)
+    return HttpResponse(serializers.serialize("json", baselines))
 
 def get_components_form(request, template_name = 'bootstrapform/form.html'):
     baseline_pk = request.REQUEST.get('baseline_pk')

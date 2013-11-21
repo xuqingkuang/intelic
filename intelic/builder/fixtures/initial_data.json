@@ -11,6 +11,9 @@
     "pk": 1, 
     "model": "builder.baseline", 
     "fields": {
+        "product": [
+            1
+        ], 
         "desc": "", 
         "is_active": true, 
         "name": "ww34_falcon_base", 
@@ -21,9 +24,6 @@
     "pk": 1, 
     "model": "builder.product", 
     "fields": {
-        "baseline": [
-            1
-        ], 
         "is_active": true, 
         "name": "baylake", 
         "form_class": 1, 

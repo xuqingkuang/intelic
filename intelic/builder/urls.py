@@ -13,6 +13,6 @@ urlpatterns = patterns('',
     url(r'^new-build/$', views.BuildCreateView.as_view(), name='build_create'),
     url(r'^build/(?P<slug>[-\w]+)/$', views.BuildDetailView.as_view(), name='build_detail'),
 
-    url(r'apis/get-products/', apis.get_products, name='builder_api_get_product'),
+    url(r'apis/get-baselines/', apis.get_baselines, name='builder_api_get_baselines'),
     url(r'apis/get-components-form/', apis.get_components_form, name='builder_api_get_components_form'),
 )

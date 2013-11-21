@@ -6,18 +6,18 @@ import models, forms
 # Admins
 # ##################################################
 
-
-class BaselineAdmin(admin.ModelAdmin):
-    list_display = ('name', 'is_active')
-    search_fields = ('name', )
-    fields = ('name', 'desc')
-
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'is_active')
     list_filter = ('form_class', )
     search_fields = ('name', )
-    filter_horizontal = ('baseline', )
-    fields = ('name', 'desc', 'form_class', 'baseline')
+    fields = ('name', 'desc', 'form_class')
+
+
+class BaselineAdmin(admin.ModelAdmin):
+    list_display = ('name', 'is_active')
+    search_fields = ('name', )
+    filter_horizontal = ('product', )
+    fields = ('name', 'product', 'desc')
 
 class ComponentTypeAdmin(admin.ModelAdmin):
     list_display = ('name', )

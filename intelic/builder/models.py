@@ -37,20 +37,20 @@ class BaseModel(models.Model):
 class FormClass(BaseModel):
     pass
 
-class Baseline(BaseModel):
-    desc            = models.CharField(
-        verbose_name=_('Description'), max_length=255, blank=True, null=True
-    )
-    is_active       = models.BooleanField(
-        verbose_name=_('Is active'), default=True
-    )
-
 class Product(BaseModel):
     desc            = models.CharField(
         verbose_name=_('Description'), max_length=255, blank=True, null=True
     )
     form_class      = models.ForeignKey(FormClass, verbose_name=_('Form class'))
-    baseline        = models.ManyToManyField(Baseline)
+    is_active       = models.BooleanField(
+        verbose_name=_('Is active'), default=True
+    )
+
+class Baseline(BaseModel):
+    product        = models.ManyToManyField(Product)
+    desc            = models.CharField(
+        verbose_name=_('Description'), max_length=255, blank=True, null=True
+    )
     is_active       = models.BooleanField(
         verbose_name=_('Is active'), default=True
     )
@@ -74,11 +74,11 @@ class Component(BaseModel):
     gerrit_url      = models.URLField(
         verbose_name=_('Gerrit URL'), max_length=8192, blank=True, null=True
     )
-    baseline        = models.ManyToManyField(
-        Baseline, verbose_name=_('Baseline')
-    )
     product         = models.ManyToManyField(
         Product, verbose_name=_('Product')
+    )
+    baseline        = models.ManyToManyField(
+        Baseline, verbose_name=_('Baseline')
     )
     is_active       = models.BooleanField(
         verbose_name=_('Is active'), default=True
@@ -107,8 +107,8 @@ class Build(BaseModel):
     created_at      = models.DateTimeField(
         verbose_name=_('Create at'), auto_now_add=True
     )
-    baseline        = models.ForeignKey(Baseline, verbose_name=_('Baseline'))
     product         = models.ForeignKey(Product, verbose_name=_('Product'))
+    baseline        = models.ForeignKey(Baseline, verbose_name=_('Baseline'))
     status          = models.CharField(max_length=11, blank=True, null=True)
     message         = models.CharField(max_length=8192, blank=True, null=True)
     progress        = models.IntegerField(default=0)

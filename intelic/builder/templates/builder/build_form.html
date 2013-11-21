@@ -32,26 +32,26 @@
     var $containerComponent = $('#componentContainer'),
         $titleComponent = $containerComponent.find('legend');
 
-    $('#id_baseline').change(function(e) {
+    $('#id_product').change(function(e) {
         if ($(this).val() == '')
             return false;
         
         var query = {
-            'baseline__pk': $(this).val(),
+            'product__pk': $(this).val(),
         };
         var queryJSON = JSON.stringify(query);
         
         $.ajax({
-            'url': '{% url "builder_api_get_product" %}',
+            'url': '{% url "builder_api_get_baselines" %}',
             'method': 'GET',
             'dataType': 'json',
             'data': {
                 'q': queryJSON,
             },
             'success': function(returnObj) {
-                var $selectProduct = $('#id_product');
+                var $selector = $('#id_baseline');
                 // Clean old data
-                $selectProduct.html($('<option value="">---------</option>'));
+                $selector.html($('<option value="">---------</option>'));
                 $containerComponent.html('');
                 $containerComponent.append($titleComponent);
                 $containerComponent.hide();
@@ -63,13 +63,13 @@
                             'value': returnObj[i]['pk']
                         })
                         .text(returnObj[i]['fields']['name'])
-                        .appendTo($selectProduct);
+                        .appendTo($selector);
                 }
             }
         });
     });
     
-    $('#id_product').change(function(e) {
+    $('#id_baseline').change(function(e) {
         $.ajax({
             'url': '{% url "builder_api_get_components_form" %}',
             'method': 'GET',
