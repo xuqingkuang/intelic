@@ -62,6 +62,14 @@ class Baseline(BaseModel):
 class ComponentType(BaseModel):
     pass
 
+class DefaultComponentValue(models.Model):
+    product         = models.ForeignKey(Product, verbose_name=_('Product'))
+    component_type  = models.ForeignKey(ComponentType, verbose_name=_('Component Type'))
+    default_value         = models.CharField(verbose_name=_('Default value'), max_length=128)
+
+    def __unicode__(self):
+        return self.default_value
+
 class Component(BaseModel):
     desc            = models.CharField(
         verbose_name=_('Description'), max_length=255, blank=True, null=True

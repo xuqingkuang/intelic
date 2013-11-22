@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext as _
 import models
-
+from pprint import pprint
 class BuildCreateModelForm(forms.ModelForm):
     baseline  = forms.ModelChoiceField(queryset = models.Baseline.objects.none())
 
@@ -22,7 +22,13 @@ class BaseComponentForm(forms.Form):
         init_baseline = kwargs.pop('init_baseline')
 
         super(BaseComponentForm, self).__init__(*args, **kwargs)
+        self._set_fields(init_product, init_baseline)
+
+    def _set_fields(self, init_product, init_baseline):
         component_queryset = models.Component.objects.all()
+        defualt_component_value_queryset = models.DefaultComponentValue.objects.filter(
+            product = init_product
+        ).select_related('component_type')
         for field_name in self.fields:
             self.fields[field_name].queryset = models.Component.objects.filter(
                 type__slug = field_name,
@@ -30,8 +36,13 @@ class BaseComponentForm(forms.Form):
                 baseline = init_baseline,
                 is_active = True,
             )
-            # Hacking the field for 'Default' empty label
-            self.fields[field_name].empty_label = _('Default')
+            # Hacking the field for replace 'Default' empty label
+            for default_component_value in defualt_component_value_queryset:
+                if default_component_value.component_type.slug == field_name:
+                    self.fields[field_name].empty_label = default_component_value.default_value
+                    break
+                else:
+                    self.fields[field_name].empty_label = _('Default')
 
     def clean(self):
         cleaned_data = self.cleaned_data

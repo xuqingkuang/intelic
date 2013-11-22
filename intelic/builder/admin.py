@@ -6,12 +6,16 @@ import models, forms
 # Admins
 # ##################################################
 
+class DefaultComponentValueInline(admin.TabularInline):
+    model = models.DefaultComponentValue
+    extra = 1
+
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'is_active')
     list_filter = ('form_class', )
     search_fields = ('name', )
     fields = ('name', 'desc', 'form_class')
-
+    inlines = (DefaultComponentValueInline, )
 
 class BaselineAdmin(admin.ModelAdmin):
     list_display = ('name', 'is_active')

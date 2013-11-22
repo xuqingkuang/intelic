@@ -9,6 +9,17 @@
 },
 {
     "pk": 1, 
+    "model": "builder.product", 
+    "fields": {
+        "form_class": 1, 
+        "desc": "", 
+        "is_active": true, 
+        "name": "baylake", 
+        "slug": "baylake"
+    }
+},
+{
+    "pk": 1, 
     "model": "builder.baseline", 
     "fields": {
         "product": [
@@ -18,17 +29,6 @@
         "is_active": true, 
         "name": "ww34_falcon_base", 
         "slug": "ww34_falcon_base"
-    }
-},
-{
-    "pk": 1, 
-    "model": "builder.product", 
-    "fields": {
-        "is_active": true, 
-        "name": "baylake", 
-        "form_class": 1, 
-        "slug": "baylake", 
-        "desc": ""
     }
 },
 {
@@ -93,6 +93,51 @@
     "fields": {
         "name": "I2C", 
         "slug": "i2c"
+    }
+},
+{
+    "pk": 1, 
+    "model": "builder.defaultcomponentvalue", 
+    "fields": {
+        "default_value": "BCM43241", 
+        "product": 1, 
+        "component_type": 1
+    }
+},
+{
+    "pk": 2, 
+    "model": "builder.defaultcomponentvalue", 
+    "fields": {
+        "default_value": "Atmel Maxtouch 1664 mXT1664S", 
+        "product": 1, 
+        "component_type": 2
+    }
+},
+{
+    "pk": 3, 
+    "model": "builder.defaultcomponentvalue", 
+    "fields": {
+        "default_value": "Panasonic 10.1\" eDP 25x14 VVX10T014M00", 
+        "product": 1, 
+        "component_type": 3
+    }
+},
+{
+    "pk": 4, 
+    "model": "builder.defaultcomponentvalue", 
+    "fields": {
+        "default_value": "Realtek ALC5642", 
+        "product": 1, 
+        "component_type": 4
+    }
+},
+{
+    "pk": 5, 
+    "model": "builder.defaultcomponentvalue", 
+    "fields": {
+        "default_value": "ST L3GD20", 
+        "product": 1, 
+        "component_type": 6
     }
 },
 {
