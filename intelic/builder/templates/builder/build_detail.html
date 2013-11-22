@@ -11,7 +11,11 @@
 {% block content %}
 <ul class="object-tools pull-right">
     <li>
+        {% if build.has_components %}
         <a href="{% url "build_download_config_file" build.slug %}" class="btn">
+        {% else %}
+        <a href="javascript:void(0)" title="{% trans "No component available for download." %}" class="btn disabled">
+        {% endif %}
             {% trans "Download config" %}
         </a>
     </li>
