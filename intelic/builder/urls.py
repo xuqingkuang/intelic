@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^new-build/$', views.BuildCreateView.as_view(), name='build_create'),
     url(r'^new-build/$', views.BuildCreateView.as_view(), name='build_create'),
     url(r'^build/(?P<slug>[-\w]+)/$', views.BuildDetailView.as_view(), name='build_detail'),
+    url(r'^build/(?P<slug>[-\w]+).txt$', views.BuildConfigDownloadView.as_view(), name='build_download_config_file'),
 
     url(r'apis/get-baselines/', apis.get_baselines, name='builder_api_get_baselines'),
     url(r'apis/get-components-form/', apis.get_components_form, name='builder_api_get_components_form'),

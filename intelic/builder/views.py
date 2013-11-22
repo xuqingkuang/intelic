@@ -1,7 +1,7 @@
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView
-from django.views.generic.detail import DetailView
-from django.http import HttpResponseRedirect 
+from django.views.generic.detail import BaseDetailView, DetailView
+from django.http import HttpResponseRedirect, HttpResponse
 from django.utils.translation import ugettext as _
 from intelic.account.views import LoginRequiredMixin
 
@@ -57,3 +57,15 @@ class BuildDetailView(LoginRequiredMixin, TitleMixin, DetailView):
         obj = super(BuildDetailView, self).get_object(queryset)
         self.set_title(obj.name)
         return obj
+
+class BuildConfigDownloadView(LoginRequiredMixin, BaseDetailView):
+    model = models.Build
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        content = self.object.get_config_file_content()
+        response = HttpResponse(content, mimetype='application/octet-stream')
+        response['Content-Disposition'] = 'attachment; filename=%s.txt' % (
+            self.object.slug
+        )
+        return response

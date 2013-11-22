@@ -9,6 +9,13 @@
 {% endblock %}
 
 {% block content %}
+<ul class="object-tools pull-right">
+    <li>
+        <a href="{% url "build_download_config_file" build.slug %}" class="btn btn-primary">
+            {% trans "Download config" %}
+        </a>
+    </li>
+</ul>
 <div class="container-fluid">
     <fieldset>
         <legend>{% trans "Config" %}</legend>

@@ -123,8 +123,10 @@ class Build(BaseModel):
         return reverse('build_detail', args=(self.slug, ))
 
     def get_config_file_content(self):
-        # TODO: Complete the function.
-        pass
+        config_file_content = ''
+        for component in self.component.all():
+            config_file_content += '%s=%s\n' % (component.type, component.name)
+        return config_file_content
 
     def save(self, *args, **kwargs):
         """Override save to make name"""
