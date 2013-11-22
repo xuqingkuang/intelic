@@ -30,6 +30,8 @@ class BaseComponentForm(forms.Form):
                 baseline = init_baseline,
                 is_active = True,
             )
+            # Hacking the field for 'Default' empty label
+            self.fields[field_name].empty_label = _('Default')
 
     def clean(self):
         cleaned_data = self.cleaned_data
