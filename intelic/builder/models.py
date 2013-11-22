@@ -104,13 +104,13 @@ class Component(BaseModel):
 # ##################################################
 
 class Build(BaseModel):
-    created_at      = models.DateTimeField(
-        verbose_name=_('Create at'), auto_now_add=True
-    )
     product         = models.ForeignKey(Product, verbose_name=_('Product'))
     baseline        = models.ForeignKey(Baseline, verbose_name=_('Baseline'))
     component       = models.ManyToManyField(Component)
     has_components  = models.BooleanField(default=False)
+    created_at      = models.DateTimeField(
+        verbose_name=_('Create at'), auto_now_add=True
+    )
 
     def add_components(self, components):
         has_components = False
@@ -146,6 +146,9 @@ class Process(models.Model):
     status          = models.CharField(max_length=11, blank=True, null=True)
     progress        = models.IntegerField(default=0)
     message         = models.CharField(max_length=8192, blank=True, null=True)
+    started_at      = models.DateTimeField(
+        verbose_name=_('Started at'), auto_now_add=True
+    )
 
     def __unicode__(self):
         return self.url
