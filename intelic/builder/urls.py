@@ -10,8 +10,8 @@ import views, apis
 urlpatterns = patterns('',
     url(r'^build-list/$', views.BuildListView.as_view(), name='build_list'),
     url(r'^new-build/$', views.BuildCreateView.as_view(), name='build_create'),
-    url(r'^new-build/$', views.BuildCreateView.as_view(), name='build_create'),
     url(r'^build/(?P<slug>[-\w]+)/$', views.BuildDetailView.as_view(), name='build_detail'),
+    url(r'^build/(?P<slug>[-\w]+)/contents/$', views.BuildDetailContentView.as_view(), name='build_detail_content'),
     url(r'^build/(?P<slug>[-\w]+).txt$', views.BuildConfigDownloadView.as_view(), name='build_download_config_file'),
 
     url(r'apis/get-baselines/', apis.get_baselines, name='builder_api_get_baselines'),

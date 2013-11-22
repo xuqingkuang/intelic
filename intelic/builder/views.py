@@ -58,6 +58,15 @@ class BuildDetailView(LoginRequiredMixin, TitleMixin, DetailView):
         self.set_title(obj.name)
         return obj
 
+class BuildDetailContentView(LoginRequiredMixin, DetailView):
+    model = models.Build
+    template_name = 'builder/build_detail_content.html'
+
+    def get_object(self, queryset=None):
+        obj = super(BuildDetailContentView, self).get_object(queryset)
+        obj.update_process()
+        return obj
+
 class BuildConfigDownloadView(LoginRequiredMixin, BaseDetailView):
     model = models.Build
 

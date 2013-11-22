@@ -178,8 +178,8 @@ LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/accounts/dashboard/'
 
 # JENKINS settings
-JENKINS_HOST = 'http://192.168.30.112:8080'
-JENKINS_USERNAME = 'admin'
-JENKINS_PASSWORD = 'admin'
-JENKINS_BUILD_JOB_NAME = 'intel_android_build'
-JENKINS_DOWNLOAD_JOB_NAME = 'format_patch_from_gerrit'
+# JENKINS_HOST = 'http://127.0.0.1:8080'
+# JENKINS_USERNAME = 'jenkins'
+# JENKINS_PASSWORD = 'pass'
+# JENKINS_BUILD_JOB_NAME = 'build_job'
+# JENKINS_DOWNLOAD_JOB_NAME = 'download_job'

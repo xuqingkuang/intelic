@@ -80,22 +80,6 @@
     }
 },
 {
-    "pk": 7, 
-    "model": "builder.componenttype", 
-    "fields": {
-        "name": "Power", 
-        "slug": "power"
-    }
-},
-{
-    "pk": 8, 
-    "model": "builder.componenttype", 
-    "fields": {
-        "name": "I2C", 
-        "slug": "i2c"
-    }
-},
-{
     "pk": 1, 
     "model": "builder.defaultcomponentvalue", 
     "fields": {
@@ -141,98 +125,137 @@
     }
 },
 {
+    "pk": 6, 
+    "model": "builder.defaultcomponentvalue", 
+    "fields": {
+        "default_value": "OV2722", 
+        "product": 1, 
+        "component_type": 5
+    }
+},
+{
     "pk": 1, 
     "model": "builder.component", 
     "fields": {
         "product": [
             1
         ], 
-        "name": "audio_patches", 
+        "name": "Realtek AIC5640", 
         "baseline": [
             1
         ], 
         "is_active": true, 
         "source": "", 
-        "gerrit_url": "http://192.168.30.102:8080/#/c/5/", 
+        "gerrit_url": "", 
         "type": 4, 
-        "slug": "audio-audio_patches", 
+        "slug": "audio-realtek-aic5640", 
         "desc": ""
+    }
+},
+{
+    "pk": 1, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "admin", 
+        "first_name": "", 
+        "last_name": "", 
+        "is_active": true, 
+        "is_superuser": true, 
+        "is_staff": true, 
+        "last_login": "2013-11-22T13:34:20.926Z", 
+        "groups": [], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$sC1YfyVwnS1p$52owM7YoAv0Jl5fAPpo49vsrY27kzSemtqRE+8VSgLE=", 
+        "email": "kuangxq@thundersoft.com", 
+        "date_joined": "2013-11-22T13:34:05.283Z"
     }
 },
 {
     "pk": 2, 
-    "model": "builder.component", 
+    "model": "auth.user", 
     "fields": {
-        "product": [
-            1
-        ], 
-        "name": "touch-device patch", 
-        "baseline": [
-            1
-        ], 
+        "username": "user1", 
+        "first_name": "", 
+        "last_name": "", 
         "is_active": true, 
-        "source": "", 
-        "gerrit_url": "http://192.168.30.102:8080/#/c/6/", 
-        "type": 2, 
-        "slug": "touch-touch-device-patch", 
-        "desc": ""
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2013-11-22T13:34:31.737Z", 
+        "groups": [], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$8QXGzIPXEwTc$TneWwetkDpvCA8k/VI9Lk0Zr5xkb/b5nS13yaHa4bEA=", 
+        "email": "", 
+        "date_joined": "2013-11-22T13:34:31.737Z"
     }
 },
 {
     "pk": 3, 
-    "model": "builder.component", 
+    "model": "auth.user", 
     "fields": {
-        "product": [
-            1
-        ], 
-        "name": "touch-kernel patch", 
-        "baseline": [
-            1
-        ], 
+        "username": "user2", 
+        "first_name": "", 
+        "last_name": "", 
         "is_active": true, 
-        "source": "", 
-        "gerrit_url": "http://192.168.30.102:8080/#/c/4/", 
-        "type": 2, 
-        "slug": "touch-touch-kernel-patch", 
-        "desc": ""
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2013-11-22T13:34:40.899Z", 
+        "groups": [], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$BlkfzqhjrGiw$k3Syp19N0lrhR8XSXt1wBDOGP/Dq50ZaG6DlHVZO5Fc=", 
+        "email": "", 
+        "date_joined": "2013-11-22T13:34:40.899Z"
+    }
+},
+{
+    "pk": 1, 
+    "model": "admin.logentry", 
+    "fields": {
+        "action_flag": 1, 
+        "action_time": "2013-11-22T13:34:31.856Z", 
+        "object_repr": "user1", 
+        "object_id": "2", 
+        "change_message": "", 
+        "user": 1, 
+        "content_type": 3
+    }
+},
+{
+    "pk": 2, 
+    "model": "admin.logentry", 
+    "fields": {
+        "action_flag": 1, 
+        "action_time": "2013-11-22T13:34:41.039Z", 
+        "object_repr": "user2", 
+        "object_id": "3", 
+        "change_message": "", 
+        "user": 1, 
+        "content_type": 3
+    }
+},
+{
+    "pk": 3, 
+    "model": "admin.logentry", 
+    "fields": {
+        "action_flag": 2, 
+        "action_time": "2013-11-22T13:35:20.077Z", 
+        "object_repr": "baylake", 
+        "object_id": "1", 
+        "change_message": "Added default component value \"OV2722\".", 
+        "user": 1, 
+        "content_type": 8
     }
 },
 {
     "pk": 4, 
-    "model": "builder.component", 
+    "model": "admin.logentry", 
     "fields": {
-        "product": [
-            1
-        ], 
-        "name": "charger_fuelgauge_patches", 
-        "baseline": [
-            1
-        ], 
-        "is_active": true, 
-        "source": "", 
-        "gerrit_url": "http://192.168.30.102:8080/#/c/7/", 
-        "type": 7, 
-        "slug": "power-charger_fuelgauge_patches", 
-        "desc": ""
-    }
-},
-{
-    "pk": 5, 
-    "model": "builder.component", 
-    "fields": {
-        "product": [
-            1
-        ], 
-        "name": "edp_to_bridge_patches", 
-        "baseline": [
-            1
-        ], 
-        "is_active": true, 
-        "source": "", 
-        "gerrit_url": "http://192.168.30.102:8080/#/c/8/", 
-        "type": 8, 
-        "slug": "i2c-edp_to_bridge_patches", 
-        "desc": ""
+        "action_flag": 1, 
+        "action_time": "2013-11-22T13:36:05.919Z", 
+        "object_repr": "Realtek AIC5640", 
+        "object_id": "1", 
+        "change_message": "", 
+        "user": 1, 
+        "content_type": 12
     }
 }
 ]

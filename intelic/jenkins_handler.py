@@ -26,7 +26,7 @@ class ICJenkinsJob(object):
         """
         return self.download_job_instance.invoke(build_params=parameters)
 
-if settings.JENKINS_HOST:
+if getattr(settings, 'JENKINS_HOST', None):
     icjenkinsjob = ICJenkinsJob(
         settings.JENKINS_HOST, settings.JENKINS_USERNAME,
         settings.JENKINS_PASSWORD

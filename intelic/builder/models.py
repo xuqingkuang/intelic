@@ -3,7 +3,7 @@ from django.utils.translation import ugettext as _
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 from django.conf import settings
-from datetime import datetime
+from django.utils import timezone
 
 from intelic.jenkins_handler import icjenkinsjob
 import signals
@@ -141,11 +141,14 @@ class Build(BaseModel):
 
     def save(self, *args, **kwargs):
         """Override save to make name"""
-        now = datetime.now()
+        now = timezone.now()
         self.name = '%s-%s-%s' % (
             self.product, self.baseline, now.strftime("%Y-%m-%d-%H:%M:%S")
         )
         return super(Build, self).save(*args, **kwargs)
+
+    def update_process(self):
+        signals.update_process.send(sender=self.__class__, instance=self)
 
 class Process(models.Model):
     build           = models.ForeignKey(Build)
@@ -179,20 +182,61 @@ def create_jenkins_build(build):
     # Added jobs urls
     # Add job urls
     build.process_set.create(
-        type = 'Building',
+        type = 'Build',
         url = '%s/job/%s' % (settings.JENKINS_HOST, settings.JENKINS_BUILD_JOB_NAME),
         status = 'Created',
         progress = '100'
     )
     build.process_set.create(
-        type = 'Packaging',
+        type = 'Package',
         url = '%s/job/%s' % (settings.JENKINS_HOST, settings.JENKINS_DOWNLOAD_JOB_NAME),
         status = 'Created',
         progress = '100'
     )
 
+def create_fake_data(build):
+    build.process_set.create(
+        type = 'Build',
+        status = 'Processing',
+        progress = '0'
+    )
+    if build.has_components:
+        build.process_set.create(
+            type = 'Package',
+            status = 'Processing',
+            progress = '0'
+        )
+
 def component_form_post_save_handler(sender, instance, **kwargs):
     if icjenkinsjob:
         create_jenkins_build(instance)
+    else:
+        create_fake_data(instance)
+
+def update_process_handler(sender, instance, **kwargs):
+    # Fake data here
+    now = timezone.now()
+    processes = instance.process_set.all()
+    for process in processes:
+        if process.progress == 100:
+            continue
+
+        if process.type == 'Build':
+            process.progress = float((now - process.started_at).seconds)/10800*100
+            
+            if process.progress == 100:
+                process.status = 'Completed'
+                if instance.has_components:
+                    process.message = '<a href="/media/default/baylake-eng-fastboot-eng.chenxf.zip" class="btn">Download</a>'
+                else:
+                    process.message = '<a href="/media/patched/baylake-eng-fastboot-eng.chenxf.zip" class="btn">Download</a>'
+            process.save()
+                
+        if process.type == 'Package':
+            process.progress = float((now - process.started_at).seconds)/120*100
+            if process.progress == 100:
+                process.message = '<a href="/media/baylake-eng-fastboot-eng.chenxf-patches.zip" class="btn">Download</a>'
+            process.save()
 
 signals.build_added_components.connect(component_form_post_save_handler, sender=Build)
+signals.update_process.connect(update_process_handler, sender=Build)
