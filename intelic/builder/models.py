@@ -132,7 +132,7 @@ class Build(BaseModel):
         """Override save to make name"""
         now = datetime.now()
         self.name = '%s-%s-%s' % (
-            self.baseline, self.product, now.strftime("%Y-%m-%d-%H:%M:%S")
+            self.product, self.baseline, now.strftime("%Y-%m-%d-%H:%M:%S")
         )
         return super(Build, self).save(*args, **kwargs)
 
