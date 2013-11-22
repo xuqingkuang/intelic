@@ -56,11 +56,17 @@
         {% endfor %}
     </fieldset>
     <fieldset>
-        <legend>{% trans "URLs" %}</legend>
-        {% for url in build.url_set.all %}
+        <legend>{% trans "Processes" %}</legend>
+        {% for process in build.process_set.all %}
         <div class="row-fluid">
-            <div class="span3">{{ url.type }}</div>
-            <div class="span9">{{ url }}</div>
+            <div class="span2">{{ process.type }}</div>
+            <div class="span2">{{ process.status }}</div>
+            <div class="span3">
+                <div class="progress progress-striped active">
+                    <div class="bar" style="width: {{ process.progress }}%;"></div>
+                </div>
+            </div>
+            <div class="span2">{{ process.message }}</div>
         </div>
         {% empty %}
         <div class="row-fluid text-center">

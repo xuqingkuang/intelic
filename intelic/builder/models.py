@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext as _
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
-
+from django.conf import settings
 from datetime import datetime
 
 from intelic.jenkins_handler import icjenkinsjob
@@ -109,14 +109,17 @@ class Build(BaseModel):
     )
     product         = models.ForeignKey(Product, verbose_name=_('Product'))
     baseline        = models.ForeignKey(Baseline, verbose_name=_('Baseline'))
-    status          = models.CharField(max_length=11, blank=True, null=True)
-    message         = models.CharField(max_length=8192, blank=True, null=True)
-    progress        = models.IntegerField(default=0)
     component       = models.ManyToManyField(Component)
+    has_components  = models.BooleanField(default=False)
 
     def add_components(self, components):
+        has_components = False
         for component in components:
+            has_components = True
             self.component.add(component)
+        if has_components:
+            self.has_components = True
+            self.save()
         signals.build_added_components.send(sender=self.__class__, instance=self)
 
     def get_absolute_url(self):
@@ -136,27 +139,49 @@ class Build(BaseModel):
         )
         return super(Build, self).save(*args, **kwargs)
 
-class BuildURL(models.Model):
+class Process(models.Model):
+    build           = models.ForeignKey(Build)
     type            = models.CharField(verbose_name=_('Name'), max_length=128)
     url             = models.URLField(blank=True, null=True)
-    build           = models.ForeignKey(Build)
+    status          = models.CharField(max_length=11, blank=True, null=True)
+    progress        = models.IntegerField(default=0)
+    message         = models.CharField(max_length=8192, blank=True, null=True)
 
     def __unicode__(self):
         return self.url
 
+def create_jenkins_build(build):
+    gerrit_change_numbers = []
+    for component in build.component.all():
+        gerrit_id = component.get_gerrit_change_number()
+        if gerrit_id:
+            gerrit_change_numbers.append(gerrit_id)
+    jenkins_params = {
+        'changes': ' '.join(gerrit_change_numbers),
+        'base_version': build.baseline.name,
+        'product': build.product.name,
+    }
+    # Do Jenkins job.
+    icjenkinsjob.trigger_build(jenkins_params)
+    icjenkinsjob.trigger_package(jenkins_params)
+    
+    # Added jobs urls
+    # Add job urls
+    build.process_set.create(
+        type = 'Building',
+        url = '%s/job/%s' % (settings.JENKINS_HOST, settings.JENKINS_BUILD_JOB_NAME),
+        status = 'Created',
+        progress = '100'
+    )
+    build.process_set.create(
+        type = 'Packaging',
+        url = '%s/job/%s' % (settings.JENKINS_HOST, settings.JENKINS_DOWNLOAD_JOB_NAME),
+        status = 'Created',
+        progress = '100'
+    )
+
 def component_form_post_save_handler(sender, instance, **kwargs):
     if icjenkinsjob:
-        gerrit_change_numbers = []
-        for component in instance.component.all():
-            gerrit_id = component.get_gerrit_change_number()
-            if gerrit_id:
-                gerrit_change_numbers.append(gerrit_id)
-        jenkins_params = {
-            'changes': ' '.join(gerrit_change_numbers),
-            'base_version': instance.baseline.name,
-            'product': instance.product.name,
-        }
-        # Do Jenkins job.
-        icjenkinsjob.trigger_build(jenkins_params)
+        create_jenkins_build(instance)
 
 signals.build_added_components.connect(component_form_post_save_handler, sender=Build)
