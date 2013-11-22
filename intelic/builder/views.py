@@ -31,7 +31,7 @@ class BuildCreateView(LoginRequiredMixin, TitleMixin, CreateView):
     def get_form(self, form_class):
         form = super(BuildCreateView, self).get_form(form_class)
         if self.request.method == "POST":
-            form.update_by_baseline(baseline = self.request.REQUEST['baseline'])
+            form.update_by_product(product = self.request.REQUEST['product'])
         return form
 
     def form_valid(self, form):
@@ -57,4 +57,3 @@ class BuildDetailView(LoginRequiredMixin, TitleMixin, DetailView):
         obj = super(BuildDetailView, self).get_object(queryset)
         self.set_title(obj.name)
         return obj
-    

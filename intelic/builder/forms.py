@@ -10,7 +10,7 @@ class BuildCreateModelForm(forms.ModelForm):
         fields = ('product', 'baseline')
 
     def update_by_product(self, product):
-        self.fields['product'].queryset = models.Baseline.objects.filter(product__pk = product)
+        self.fields['baseline'].queryset = models.Baseline.objects.filter(product__pk = product)
 
 class BaseComponentForm(forms.Form):
     class Meta:
@@ -41,8 +41,7 @@ class BaseComponentForm(forms.Form):
 
     def save(self, *args, **kwargs):
         build_instance = kwargs.pop('build_instance')
-        for component in self.cleaned_data['components']:
-            build_instance.component.add(component)
+        build_instance.add_components(self.cleaned_data['components'])
 
 class BaseBuildComponentForm(BaseComponentForm):
     touch = forms.ModelChoiceField(

@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models import signals
 from django.utils.translation import ugettext as _
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
@@ -7,6 +6,7 @@ from django.core.urlresolvers import reverse
 from datetime import datetime
 
 from intelic.jenkins_handler import icjenkinsjob
+import signals
 
 # Create your models here.
 
@@ -114,6 +114,11 @@ class Build(BaseModel):
     progress        = models.IntegerField(default=0)
     component       = models.ManyToManyField(Component)
 
+    def add_components(self, components):
+        for component in components:
+            self.component.add(component)
+        signals.build_added_components.send(sender=self.__class__, instance=self)
+
     def get_absolute_url(self):
         return reverse('build_detail', args=(self.slug, ))
 
@@ -136,3 +141,20 @@ class BuildURL(models.Model):
 
     def __unicode__(self):
         return self.url
+
+def component_form_post_save_handler(sender, instance, **kwargs):
+    if icjenkinsjob:
+        gerrit_change_numbers = []
+        for component in instance.component.all():
+            gerrit_id = component.get_gerrit_change_number()
+            if gerrit_id:
+                gerrit_change_numbers.append(gerrit_id)
+        jenkins_params = {
+            'changes': ' '.join(gerrit_change_numbers),
+            'base_version': instance.baseline.name,
+            'product': instance.product.name,
+        }
+        # Do Jenkins job.
+        icjenkinsjob.trigger_build(jenkins_params)
+
+signals.build_added_components.connect(component_form_post_save_handler, sender=Build)
