@@ -33,7 +33,13 @@
                 <div class="bar" style="width: {{ process.progress }}%;"></div>
             </div>
         </div>
+        {% ifequal process.progress 100 %}
+        {% if process.url %}
+        <div class="span2"><a href="{{ process.url }}" target="_blank" class="btn">{% trans "Download" %}</a></div>
+        {% else %}
         <div class="span2">{{ process.message|default:""|safe }}</div>
+        {% endif %}
+        {% endifequal %}
     </div>
     {% empty %}
     <div class="row-fluid text-center">

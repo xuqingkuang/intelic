@@ -27,8 +27,8 @@
         ], 
         "desc": "", 
         "is_active": true, 
-        "name": "ww34_falcon_base", 
-        "slug": "ww34_falcon_base"
+        "name": "ww34", 
+        "slug": "ww34"
     }
 },
 {
@@ -140,12 +140,12 @@
         "product": [
             1
         ], 
-        "name": "Realtek AIC5640", 
+        "name": "AIC5672", 
         "baseline": [
             1
         ], 
         "is_active": true, 
-        "source": "", 
+        "patch_file": "uploads/patches/0001-ALC5672_driver_patch_ww33.patch", 
         "gerrit_url": "", 
         "type": 4, 
         "slug": "audio-realtek-aic5640", 
@@ -153,109 +153,117 @@
     }
 },
 {
-    "pk": 1, 
-    "model": "auth.user", 
-    "fields": {
-        "username": "admin", 
-        "first_name": "", 
-        "last_name": "", 
-        "is_active": true, 
-        "is_superuser": true, 
-        "is_staff": true, 
-        "last_login": "2013-11-22T13:34:20.926Z", 
-        "groups": [], 
-        "user_permissions": [], 
-        "password": "pbkdf2_sha256$10000$sC1YfyVwnS1p$52owM7YoAv0Jl5fAPpo49vsrY27kzSemtqRE+8VSgLE=", 
-        "email": "kuangxq@thundersoft.com", 
-        "date_joined": "2013-11-22T13:34:05.283Z"
-    }
-},
-{
     "pk": 2, 
-    "model": "auth.user", 
+    "model": "builder.component", 
     "fields": {
-        "username": "user1", 
-        "first_name": "", 
-        "last_name": "", 
+        "product": [
+            1
+        ], 
+        "name": "AIC5640", 
+        "baseline": [
+            1
+        ], 
         "is_active": true, 
-        "is_superuser": false, 
-        "is_staff": false, 
-        "last_login": "2013-11-22T13:34:31.737Z", 
-        "groups": [], 
-        "user_permissions": [], 
-        "password": "pbkdf2_sha256$10000$8QXGzIPXEwTc$TneWwetkDpvCA8k/VI9Lk0Zr5xkb/b5nS13yaHa4bEA=", 
-        "email": "", 
-        "date_joined": "2013-11-22T13:34:31.737Z"
+        "patch_file": "uploads/patches/AIC5640.patch", 
+        "gerrit_url": "", 
+        "type": 4, 
+        "slug": "audio-aic5640", 
+        "desc": ""
     }
 },
 {
     "pk": 3, 
-    "model": "auth.user", 
+    "model": "builder.component", 
     "fields": {
-        "username": "user2", 
-        "first_name": "", 
-        "last_name": "", 
+        "product": [
+            1
+        ], 
+        "name": "RTD2136", 
+        "baseline": [
+            1
+        ], 
         "is_active": true, 
-        "is_superuser": false, 
-        "is_staff": false, 
-        "last_login": "2013-11-22T13:34:40.899Z", 
-        "groups": [], 
-        "user_permissions": [], 
-        "password": "pbkdf2_sha256$10000$BlkfzqhjrGiw$k3Syp19N0lrhR8XSXt1wBDOGP/Dq50ZaG6DlHVZO5Fc=", 
-        "email": "", 
-        "date_joined": "2013-11-22T13:34:40.899Z"
-    }
-},
-{
-    "pk": 1, 
-    "model": "admin.logentry", 
-    "fields": {
-        "action_flag": 1, 
-        "action_time": "2013-11-22T13:34:31.856Z", 
-        "object_repr": "user1", 
-        "object_id": "2", 
-        "change_message": "", 
-        "user": 1, 
-        "content_type": 3
-    }
-},
-{
-    "pk": 2, 
-    "model": "admin.logentry", 
-    "fields": {
-        "action_flag": 1, 
-        "action_time": "2013-11-22T13:34:41.039Z", 
-        "object_repr": "user2", 
-        "object_id": "3", 
-        "change_message": "", 
-        "user": 1, 
-        "content_type": 3
-    }
-},
-{
-    "pk": 3, 
-    "model": "admin.logentry", 
-    "fields": {
-        "action_flag": 2, 
-        "action_time": "2013-11-22T13:35:20.077Z", 
-        "object_repr": "baylake", 
-        "object_id": "1", 
-        "change_message": "Added default component value \"OV2722\".", 
-        "user": 1, 
-        "content_type": 8
+        "patch_file": "uploads/patches/rtd2136.patch", 
+        "gerrit_url": "", 
+        "type": 3, 
+        "slug": "display-rtd2136", 
+        "desc": ""
     }
 },
 {
     "pk": 4, 
-    "model": "admin.logentry", 
+    "model": "builder.component", 
     "fields": {
-        "action_flag": 1, 
-        "action_time": "2013-11-22T13:36:05.919Z", 
-        "object_repr": "Realtek AIC5640", 
-        "object_id": "1", 
-        "change_message": "", 
-        "user": 1, 
-        "content_type": 12
+        "product": [
+            1
+        ], 
+        "name": "NCB3051", 
+        "baseline": [
+            1
+        ], 
+        "is_active": true, 
+        "patch_file": "uploads/patches/ncb3051.patch", 
+        "gerrit_url": "", 
+        "type": 2, 
+        "slug": "touch-ncb3051", 
+        "desc": ""
+    }
+},
+{
+    "pk": 5, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            1
+        ], 
+        "name": "BCM4330", 
+        "baseline": [
+            1
+        ], 
+        "is_active": true, 
+        "patch_file": "uploads/patches/0003-Module-Name-WIFI-and-BT.patch", 
+        "gerrit_url": "", 
+        "type": 1, 
+        "slug": "wifi-bcm4330", 
+        "desc": ""
+    }
+},
+{
+    "pk": 6, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            1
+        ], 
+        "name": "MPU6050", 
+        "baseline": [
+            1
+        ], 
+        "is_active": true, 
+        "patch_file": "uploads/patches/mpu6050.patch", 
+        "gerrit_url": "", 
+        "type": 6, 
+        "slug": "sensor-mpu6050", 
+        "desc": ""
+    }
+},
+{
+    "pk": 7, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            1
+        ], 
+        "name": "OV9726", 
+        "baseline": [
+            1
+        ], 
+        "is_active": true, 
+        "patch_file": "uploads/patches/OV9726.patch", 
+        "gerrit_url": "", 
+        "type": 5, 
+        "slug": "camera-ov9726", 
+        "desc": ""
     }
 }
 ]

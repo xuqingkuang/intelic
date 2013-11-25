@@ -4,9 +4,10 @@ from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.utils import timezone
+from django.contrib.sites.models import Site
 
 from intelic.jenkins_handler import icjenkinsjob
-import signals
+import os, zipfile, signals
 
 # Create your models here.
 
@@ -65,7 +66,7 @@ class ComponentType(BaseModel):
 class DefaultComponentValue(models.Model):
     product         = models.ForeignKey(Product, verbose_name=_('Product'))
     component_type  = models.ForeignKey(ComponentType, verbose_name=_('Component Type'))
-    default_value         = models.CharField(verbose_name=_('Default value'), max_length=128)
+    default_value   = models.CharField(verbose_name=_('Default value'), max_length=128)
 
     def __unicode__(self):
         return self.default_value
@@ -75,12 +76,12 @@ class Component(BaseModel):
         verbose_name=_('Description'), max_length=255, blank=True, null=True
     )
     type            = models.ForeignKey(ComponentType)
-    source          = models.FileField(
-        verbose_name=_('Source'), upload_to='uploads/source/', blank=True,
-        null=True
-    )
     gerrit_url      = models.URLField(
         verbose_name=_('Gerrit URL'), max_length=8192, blank=True, null=True
+    )
+    patch_file      = models.FileField(
+        verbose_name=_('Patch file'), upload_to='uploads/patches/', 
+        blank=True, null=True
     )
     product         = models.ManyToManyField(
         Product, verbose_name=_('Product')
@@ -120,7 +121,7 @@ class Build(BaseModel):
         verbose_name=_('Create at'), auto_now_add=True
     )
 
-    def add_components(self, components):
+    def save_components(self, components):
         has_components = False
         for component in components:
             has_components = True
@@ -130,6 +131,49 @@ class Build(BaseModel):
             self.save()
         signals.build_added_components.send(sender=self.__class__, instance=self)
 
+    def create_build_job(self):
+        self.process_set.create(
+            type = 'Build',
+            status = 'Processing',
+            progress = '0'
+        )
+        if icjenkinsjob:
+            self.create_jenkins_build()
+
+    def create_patches_package(self):
+        self.process_set.create(
+            type = 'Package',
+            status = 'Processing',
+            progress = '0'
+        )
+        signals.pre_patches_package_create.send(sender=self.__class__, instance=self)
+        patches_pkg = zipfile.ZipFile(
+            self.generate_patches_package_name(), 'w'
+        )
+        for component in self.component.all():
+            patches_pkg.write(
+                component.patch_file.path,
+                os.path.basename(component.patch_file.name)
+            )
+        patches_pkg.close()
+        signals.post_patches_package_create.send(
+            sender=self.__class__, instance=self, patches_package = patches_pkg
+        )
+
+    def create_jenkins_build(self):
+        gerrit_change_numbers = []
+        for component in self.component.all():
+            gerrit_id = component.get_gerrit_change_number()
+            if gerrit_id:
+                gerrit_change_numbers.append(gerrit_id)
+        jenkins_params = {
+            'changes': ' '.join(gerrit_change_numbers),
+            'base_version': self.baseline.name,
+            'product': self.product.name,
+        }
+        # Do Jenkins job.
+        icjenkinsjob.trigger_build(jenkins_params)
+
     def get_absolute_url(self):
         return reverse('build_detail', args=(self.slug, ))
 
@@ -138,6 +182,9 @@ class Build(BaseModel):
         for component in self.component.all():
             config_file_content += '%s=%s\n' % (component.type, component.name)
         return config_file_content
+
+    def generate_patches_package_name(self, root = settings.MEDIA_ROOT):
+        return os.path.join(root, 'patches', self.slug + '.zip')
 
     def save(self, *args, **kwargs):
         """Override save to make name"""
@@ -164,54 +211,10 @@ class Process(models.Model):
     def __unicode__(self):
         return self.url
 
-def create_jenkins_build(build):
-    gerrit_change_numbers = []
-    for component in build.component.all():
-        gerrit_id = component.get_gerrit_change_number()
-        if gerrit_id:
-            gerrit_change_numbers.append(gerrit_id)
-    jenkins_params = {
-        'changes': ' '.join(gerrit_change_numbers),
-        'base_version': build.baseline.name,
-        'product': build.product.name,
-    }
-    # Do Jenkins job.
-    icjenkinsjob.trigger_build(jenkins_params)
-    icjenkinsjob.trigger_package(jenkins_params)
-    
-    # Added jobs urls
-    # Add job urls
-    build.process_set.create(
-        type = 'Build',
-        url = '%s/job/%s' % (settings.JENKINS_HOST, settings.JENKINS_BUILD_JOB_NAME),
-        status = 'Created',
-        progress = '100'
-    )
-    build.process_set.create(
-        type = 'Package',
-        url = '%s/job/%s' % (settings.JENKINS_HOST, settings.JENKINS_DOWNLOAD_JOB_NAME),
-        status = 'Created',
-        progress = '100'
-    )
-
-def create_fake_data(build):
-    build.process_set.create(
-        type = 'Build',
-        status = 'Processing',
-        progress = '0'
-    )
-    if build.has_components:
-        build.process_set.create(
-            type = 'Package',
-            status = 'Processing',
-            progress = '0'
-        )
-
 def component_form_post_save_handler(sender, instance, **kwargs):
-    if icjenkinsjob:
-        create_jenkins_build(instance)
-    else:
-        create_fake_data(instance)
+    instance.create_build_job()
+    if instance.has_components:
+        instance.create_patches_package()
 
 def update_process_handler(sender, instance, **kwargs):
     # Fake data here
@@ -223,7 +226,6 @@ def update_process_handler(sender, instance, **kwargs):
 
         if process.type == 'Build':
             process.progress = float((now - process.started_at).seconds)/10800*100
-            
             if process.progress == 100:
                 process.status = 'Completed'
                 if instance.has_components:
@@ -231,12 +233,18 @@ def update_process_handler(sender, instance, **kwargs):
                 else:
                     process.message = '<a href="/media/patched/baylake-eng-fastboot-eng.chenxf.zip" class="btn">Download</a>'
             process.save()
-                
+
         if process.type == 'Package':
-            process.progress = float((now - process.started_at).seconds)/120*100
-            if process.progress == 100:
-                process.message = '<a href="/media/baylake-eng-fastboot-eng.chenxf-patches.zip" class="btn">Download</a>'
+            process.progress = float((now - process.started_at).seconds)/30*100
             process.save()
+
+def post_patches_package_create_handler(sender, instance, patches_package, **kwargs):
+    url = 'http://%s%s' % (
+        Site.objects.get_current(),
+        instance.generate_patches_package_name(root = settings.MEDIA_URL)
+    )
+    instance.process_set.filter(type = 'Package').update(url = url)
 
 signals.build_added_components.connect(component_form_post_save_handler, sender=Build)
 signals.update_process.connect(update_process_handler, sender=Build)
+signals.post_patches_package_create.connect(post_patches_package_create_handler, sender=Build)

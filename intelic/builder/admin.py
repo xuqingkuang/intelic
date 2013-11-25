@@ -32,7 +32,7 @@ class ComponentAdmin(admin.ModelAdmin):
     list_display = ('name', 'type', 'is_active')
     list_filter = ('type', )
     filter_horizontal = ('baseline', 'product')
-    fields = ('name', 'desc', 'type', 'source', 'baseline', 'product', 'gerrit_url')
+    fields = ('name', 'desc', 'type', 'baseline', 'product', 'patch_file', 'gerrit_url')
 
 class BuildAdmin(admin.ModelAdmin):
     list_display = ('name', 'baseline', 'product', 'created_at')

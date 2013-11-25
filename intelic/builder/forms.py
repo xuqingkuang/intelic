@@ -54,7 +54,7 @@ class BaseComponentForm(forms.Form):
 
     def save(self, *args, **kwargs):
         build_instance = kwargs.pop('build_instance')
-        build_instance.add_components(self.cleaned_data['components'])
+        build_instance.save_components(self.cleaned_data['components'])
 
 class BaseBuildComponentForm(BaseComponentForm):
     touch = forms.ModelChoiceField(
