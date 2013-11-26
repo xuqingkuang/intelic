@@ -34,10 +34,15 @@ class ComponentAdmin(admin.ModelAdmin):
     filter_horizontal = ('baseline', 'product')
     fields = ('name', 'desc', 'type', 'baseline', 'product', 'patch_file', 'gerrit_url')
 
+class ProcessInline(admin.TabularInline):
+    model = models.Process
+    extra = 1
+
 class BuildAdmin(admin.ModelAdmin):
     list_display = ('name', 'baseline', 'product', 'created_at')
     list_filter = ('baseline', 'product')
     search_fields = ('name', )
+    inlines = (ProcessInline, )
 
 admin.site.register(models.Baseline, BaselineAdmin)
 admin.site.register(models.Product, ProductAdmin)
