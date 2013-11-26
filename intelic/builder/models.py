@@ -231,7 +231,7 @@ def update_process_handler(sender, instance, **kwargs):
                 if instance.has_components:
                     process.message = '<a href="/media/default/baylake-eng-fastboot-eng.chenxf.zip" class="btn">Download</a>'
                 else:
-                    process.message = '<a href="/media/patched/baylake-eng-fastboot-eng.chenxf.zip" class="btn">Download</a>'
+                    process.message = '<a href="/media/all_patched/baylake-eng-fastboot-eng.chenxf.zip" class="btn">Download</a>'
             process.save()
 
         if process.type == 'Package':
