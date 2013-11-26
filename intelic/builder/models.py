@@ -47,6 +47,10 @@ class Product(BaseModel):
         verbose_name=_('Is active'), default=True
     )
 
+    class Meta:
+        verbose_name = _('Product')
+        verbose_name_plural = _('Products')
+
 class Baseline(BaseModel):
     product        = models.ManyToManyField(Product)
     desc            = models.CharField(
@@ -56,6 +60,10 @@ class Baseline(BaseModel):
         verbose_name=_('Is active'), default=True
     )
 
+    class Meta:
+        verbose_name = _('Baseline')
+        verbose_name_plural = _('Baselines')
+
 # ##################################################
 # Component models
 # ##################################################
@@ -63,10 +71,18 @@ class Baseline(BaseModel):
 class ComponentType(BaseModel):
     pass
 
+    class Meta:
+        verbose_name = _('Component type')
+        verbose_name_plural = _('Component types')
+
 class DefaultComponentValue(models.Model):
     product         = models.ForeignKey(Product, verbose_name=_('Product'))
     component_type  = models.ForeignKey(ComponentType, verbose_name=_('Component Type'))
     default_value   = models.CharField(verbose_name=_('Default value'), max_length=128)
+
+    class Meta:
+        verbose_name = _('Default component value')
+        verbose_name_plural = _('Default compont values')
 
     def __unicode__(self):
         return self.default_value
@@ -92,6 +108,10 @@ class Component(BaseModel):
     is_active       = models.BooleanField(
         verbose_name=_('Is active'), default=True
     )
+
+    class Meta:
+        verbose_name = _('Component')
+        verbose_name_plural = _('Components')
 
     def upload_source_to_git_repo(self):
         # TODO: Complete the function.
@@ -120,6 +140,10 @@ class Build(BaseModel):
     created_at      = models.DateTimeField(
         verbose_name=_('Create at'), auto_now_add=True
     )
+
+    class Meta:
+        verbose_name = _('Build')
+        verbose_name_plural = _('Builds')
 
     def save_components(self, components):
         has_components = False
@@ -207,6 +231,10 @@ class Process(models.Model):
     started_at      = models.DateTimeField(
         verbose_name=_('Started at'), auto_now_add=True
     )
+
+    class Meta:
+        verbose_name = _('Process')
+        verbose_name_plural = _('Processes')
 
     def __unicode__(self):
         return self.url
