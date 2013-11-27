@@ -6,9 +6,11 @@ from django.conf import settings
 from django.utils import timezone
 from django.contrib.sites.models import Site
 
+from datetime import timedelta
+
 from intelic.jenkins_handler import icjenkinsjob
 import os, zipfile, signals
-
+from pprint import pprint
 # Create your models here.
 
 # ##################################################
@@ -239,6 +241,25 @@ class Process(models.Model):
     def __unicode__(self):
         return self.url
 
+    def get_progress(self, commit=False):
+        now =  timezone.now()
+        if self.type == 'Build':
+            estimated_seconds = 10000
+        if self.type == 'Package':
+            estimated_seconds = 30
+        progress = float((now - self.started_at).seconds)/estimated_seconds*100
+        remaining_seconds = estimated_seconds  - (now - self.started_at).seconds
+        remaining_str = timedelta(seconds=remaining_seconds)
+        if remaining_seconds < 0 or progress > 100:
+            progress, remaining_seconds = 100, 0
+        if progress == 100 and commit:
+            self.status = 'Completed'
+        if commit:
+            self.progress = progress
+            self.message = '%s remaining' % ':'.join(str(remaining_str).split(':'))
+            self.save()
+        return progress, remaining_seconds
+
 def component_form_post_save_handler(sender, instance, **kwargs):
     instance.create_build_job()
     if instance.has_components:
@@ -252,18 +273,14 @@ def update_process_handler(sender, instance, **kwargs):
         if process.progress == 100:
             continue
 
+        progress, remaining_seconds = process.get_progress(commit=True)
         if process.type == 'Build':
-            process.progress = float((now - process.started_at).seconds)/10800*100
-            if process.progress == 100:
-                process.status = 'Completed'
+            if progress == 100:
+                # Fake data
                 if instance.has_components:
                     process.message = '<a href="/media/default/baylake-eng-fastboot-eng.chenxf.zip" class="btn">Download</a>'
                 else:
                     process.message = '<a href="/media/all_patched/baylake-eng-fastboot-eng.chenxf.zip" class="btn">Download</a>'
-            process.save()
-
-        if process.type == 'Package':
-            process.progress = float((now - process.started_at).seconds)/30*100
             process.save()
 
 def post_patches_package_create_handler(sender, instance, patches_package, **kwargs):
