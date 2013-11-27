@@ -205,8 +205,10 @@ class Build(BaseModel):
 
     def get_config_file_content(self):
         config_file_content = ''
+        config_file_content += 'Platform: %s\n' % self.product
+        config_file_content += 'Baseline: %s\n\n' % self.baseline
         for component in self.component.all():
-            config_file_content += '%s=%s\n' % (component.type, component.name)
+            config_file_content += '%s: %s\n' % (component.type, component.name)
         return config_file_content
 
     def generate_patches_package_name(self, root = settings.MEDIA_ROOT):
