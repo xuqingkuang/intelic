@@ -39,7 +39,7 @@ class BaseComponentForm(forms.Form):
             # Hacking the field for replace 'Default' empty label
             for default_component_value in defualt_component_value_queryset:
                 if default_component_value.component_type.slug == field_name:
-                    self.fields[field_name].empty_label = _('Builtin - %s') % default_component_value.default_value
+                    self.fields[field_name].empty_label = default_component_value.default_value
                     break
                 else:
                     self.fields[field_name].empty_label = _('Default')
