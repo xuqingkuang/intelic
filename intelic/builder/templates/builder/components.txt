@@ -1,0 +1,8 @@
+SoC Info: Intel Valleyview-T (17x17mm) Consumer SKU
+PMIC: Rohm BD2610GW
+Memory: Hynix 2GB DC LPDDR3-1067 H9CCNNN8KTMLBR-NTM
+
+Platform: {{ product }}
+Baseline: {{ baseline }}
+{% for component in components %}
+{{ component.type }}: {{ component.name }}{% endfor %}
