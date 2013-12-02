@@ -203,19 +203,6 @@ class Build(BaseModel):
     def get_absolute_url(self):
         return reverse('build_detail', args=(self.slug, ))
 
-    def get_config_file_content(self):
-        config_file_content = ''
-
-        config_file_content += 'SoC Info: Intel Valleyview-T (17x17mm) Consumer SKU'
-        config_file_content += 'PMIC: Rohm BD2610GW'
-        config_file_content += 'Memory: Hynix 2GB DC LPDDR3-1067 H9CCNNN8KTMLBR-NTM'
-
-        config_file_content += 'Platform: %s\n' % self.product
-        config_file_content += 'Baseline: %s\n\n' % self.baseline
-        for component in self.component.all():
-            config_file_content += '%s: %s\n' % (component.type, component.name)
-        return config_file_content
-
     def generate_patches_package_name(self, root = settings.MEDIA_ROOT):
         return os.path.join(root, 'patches', self.slug + '.zip')
 

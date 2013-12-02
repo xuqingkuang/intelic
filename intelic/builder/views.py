@@ -1,10 +1,12 @@
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView
 from django.views.generic.detail import BaseDetailView, DetailView
+from django.views.generic.base import TemplateView
 from django.http import HttpResponseRedirect, HttpResponse
 from django.utils.translation import ugettext as _
 from intelic.account.views import LoginRequiredMixin
 
+import os.path
 import models, forms
 
 class TitleMixin(object):
@@ -67,14 +69,25 @@ class BuildDetailContentView(LoginRequiredMixin, DetailView):
         obj.update_process()
         return obj
 
-class BuildConfigDownloadView(LoginRequiredMixin, BaseDetailView):
+class BuildConfigDownloadView(LoginRequiredMixin, TemplateView):
     model = models.Build
+    template_name = 'builder/components.txt'
+    content_type = 'application/octet-stream'
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        content = self.object.get_config_file_content()
-        response = HttpResponse(content, mimetype='application/octet-stream')
-        response['Content-Disposition'] = 'attachment; filename=%s.txt' % (
-            self.object.slug
+    def get_context_data(self, **kwargs):
+        context = super(BuildConfigDownloadView, self).get_context_data(**kwargs)
+        context['product'] = models.Product.objects.get(
+            pk = self.request.REQUEST.get('product')
         )
-        return response
+        context['baseline'] = models.Baseline.objects.get(
+            pk = self.request.REQUEST.get('baseline')
+        )
+        component_form_class = getattr(forms, context['product'].form_class.name)
+        component_form = component_form_class(
+            self.request.REQUEST,
+            init_product = context['product'],
+            init_baseline = context['baseline'],
+        )
+        if component_form.is_valid():
+            context['components'] = component_form.cleaned_data['components']
+        return context

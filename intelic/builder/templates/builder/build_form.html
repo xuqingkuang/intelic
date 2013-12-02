@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-<form action="." method="POST" class="form-horizontal">
+<form id="createBuildForm" action="." method="POST" class="form-horizontal">
     {% csrf_token %}
     <fieldset>
         <legend>{% trans "Config" %}</legend>
@@ -21,7 +21,8 @@
     <div class="control-group">
         <div class="controls">
             <input type="submit" value="{% trans "Build" %}" class="btn btn-primary" />
-            <input type="reset" value="{% trans "Default" %}" class="btn" />
+            <input id="btnReset" type="reset" value="{% trans "Default" %}" class="btn" disabled />
+            <input id="btnDownloadComponent" type="button" value="{% trans "Component download list" %}" class="btn" disabled />
         </div>
     </div>
 </form>
@@ -29,12 +30,17 @@
 
 {% block js_footer %}
 <script type="text/javascript" charset="utf-8">
-    var $containerComponent = $('#componentContainer'),
+    var $selectorBaseline = $('#id_baseline'),
+        $containerComponent = $('#componentContainer'),
         $titleComponent = $containerComponent.find('legend');
 
     $('#id_product').change(function(e) {
-        if ($(this).val() == '')
+        if ($(this).val() == '') {
+            $selectorBaseline.html($('<option value="">---------</option>'));
+            $containerComponent.html('');
+            $('#btnReset, #btnDownloadComponent').prop('disabled', true);
             return false;
+        }
         
         var query = {
             'product__pk': $(this).val(),
@@ -49,12 +55,9 @@
                 'q': queryJSON,
             },
             'success': function(returnObj) {
-                var $selector = $('#id_baseline');
                 // Clean old data
-                $selector.html($('<option value="">---------</option>'));
+                $selectorBaseline.html($('<option value="">---------</option>'));
                 $containerComponent.html('');
-                $containerComponent.append($titleComponent);
-                $containerComponent.hide();
 
                 // Append new data
                 for (var i=0; i<returnObj.length; i++) {
@@ -63,30 +66,45 @@
                             'value': returnObj[i]['pk']
                         })
                         .text(returnObj[i]['fields']['name'])
-                        .appendTo($selector);
+                        .appendTo($selectorBaseline);
                 }
             }
         });
     });
     
-    $('#id_baseline').change(function(e) {
+    $selectorBaseline.change(function(e) {
+        var $self = $(this);
+        if ($self.val() == '') {
+            $('#btnReset, #btnDownloadComponent').prop('disabled', true);
+            $containerComponent.html('');
+            return false
+        }
+        $('#btnReset, #btnDownloadComponent').prop('disabled', false);
         $.ajax({
             'url': '{% url "builder_api_get_components_form" %}',
             'method': 'GET',
             'dataType': 'html',
             'data': {
                 'baseline_pk': $('#id_baseline').val(),
-                'product_pk': $(this).val()
+                'product_pk': $self.val()
             },
             'success': function(html) {
                 $containerComponent.html(html);
                 $containerComponent.prepend($titleComponent);
                 $containerComponent.show();
+                
+                // Determine download component button status
             },
             'failure': function(msg) {
                 alert(msg);
             }
         });
+    });
+    
+    $('#btnDownloadComponent').click(function(e) {
+        window.open(
+            '{% url "build_download_config_file" %}?' + $('#createBuildForm').serialize()
+        )
     });
 </script>
 {% endblock %}
