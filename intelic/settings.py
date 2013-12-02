@@ -175,7 +175,7 @@ LOGGING = {
 }
 
 LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/accounts/dashboard/'
+LOGIN_REDIRECT_URL = '/builder/build-list/'
 
 # JENKINS settings
 # JENKINS_HOST = 'http://127.0.0.1:8080'

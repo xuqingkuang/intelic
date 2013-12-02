@@ -18,12 +18,11 @@
 <div id="content-main">
     <div class="row-fluid">
         <div class="well span6 well-wrapper-form">
-            <img class="img-circle logo-admin" src="{% static "admin/img/logo-140x140.png" %}" alt="{{ site.name }}">
             <form class="bs-docs-example form-inline" id="login-form" action="{{ app_path }}" method="post">
                 {% csrf_token %}
                 <fieldset>
                     <legend>
-                        {% trans 'Intel IC administration' %} - {{ title }}
+                        {% trans 'EasyTrail' %} - {{ title }}
                     </legend>
                     {% if form.errors and not form.non_field_errors and not form.this_is_the_login_form.errors %}
                         <p class="errornote alert alert-error fade in">

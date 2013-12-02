@@ -13,7 +13,7 @@ class HomeRedirectView(RedirectView):
     permanent = False
     def get_redirect_url(self):
         # it would be better to use reverse here
-        return reverse('account_dashboard')
+        return reverse('build_list')
 
 urlpatterns = patterns('',
     # Examples:
