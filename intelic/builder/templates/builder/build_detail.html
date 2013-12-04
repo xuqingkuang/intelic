@@ -17,9 +17,27 @@
 {% block js_footer %}
 <script type="text/javascript" charset="utf-8">
 var container = $('#buildDetailContainer');
+
+var triggerProcess = function(e) {
+    var $target = $(e.target);
+    if (!$target.attr('data-action')) {
+        return false;
+    }
+    var action = $target.attr('data-action'),
+        pk = $target.attr('data-pk');
+    $.ajax({
+        'url': '{% url "builder_trigger_process" %}',
+        'data': {
+            'pk': pk,
+            'a': action
+        }
+    });
+}
+
 var updateProcess = function() {
     $.get('{% url "build_detail_content" build.slug %}', {}, function(html) {
         container.html(html);
+        container.find('.btn').click(triggerProcess);
     });
 }
 setInterval(updateProcess, 1000);

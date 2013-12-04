@@ -242,9 +242,8 @@ class Process(models.Model):
     progress        = models.IntegerField(default=0)
     message         = models.CharField(max_length=8192, blank=True, null=True)
     started_at      = models.DateTimeField(
-        verbose_name=_('Started at'), auto_now_add=True
+        verbose_name=_('Started at'), blank=True, null=True
     )
-
     class Meta:
         verbose_name = _('Process')
         verbose_name_plural = _('Processes')
@@ -252,10 +251,24 @@ class Process(models.Model):
     def __unicode__(self):
         return self.url
 
+    def start(self):
+        self.progress = 0
+        self.started_at = timezone.now()
+        self.save()
+
+    def cancel(self):
+        self.progress = 0
+        self.started_at = None
+        self.save()
+
+    # TODO: Move related build features from Build to Process
+
     def get_progress(self, commit=False):
         now =  timezone.now()
         if self.type == 'Build':
             estimated_seconds = 10000
+        if self.type == 'Build' and not self.build.has_components:
+            estimated_seconds = 60
         if self.type == 'Package':
             estimated_seconds = 30
         progress = float((now - self.started_at).seconds)/estimated_seconds*100
@@ -281,17 +294,16 @@ def update_process_handler(sender, instance, **kwargs):
     now = timezone.now()
     processes = instance.process_set.all()
     for process in processes:
-        if process.progress == 100:
+        if process.progress == 100 or not process.started_at:
             continue
-
         progress, remaining_seconds = process.get_progress(commit=True)
         if process.type == 'Build':
             if progress == 100:
                 # Fake data
                 if instance.has_components:
-                    process.message = '<a href="/media/default/baylake-eng-fastboot-eng.chenxf.zip" class="btn">Download</a>'
+                    process.url = '/media/all_patched/baylake-eng-fastboot-eng.chenxf.zip'
                 else:
-                    process.message = '<a href="/media/all_patched/baylake-eng-fastboot-eng.chenxf.zip" class="btn">Download</a>'
+                    process.url = '/media/default/baylake-eng-fastboot-eng.chenxf.zip'
             process.save()
 
 def post_patches_package_create_handler(sender, instance, patches_package, **kwargs):

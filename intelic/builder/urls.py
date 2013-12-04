@@ -16,4 +16,5 @@ urlpatterns = patterns('',
 
     url(r'apis/get-baselines/', apis.get_baselines, name='builder_api_get_baselines'),
     url(r'apis/get-components-form/', apis.get_components_form, name='builder_api_get_components_form'),
+    url(r'apis/trigger-process/', apis.trigger_process, name='builder_trigger_process'),
 )
