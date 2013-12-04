@@ -1,5 +1,6 @@
-SoC Info: {{ PRODUCT }}
-PMIC: {{ SOIC }}
+SoC Info: {{ product }}
+{% for pmic in pmics %}
+PMIC: {{ pmic }}{% endfor %}
 
 Platform: {{ product }}
 Baseline: {{ baseline }}

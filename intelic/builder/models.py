@@ -50,8 +50,8 @@ class Product(BaseModel):
     )
 
     class Meta:
-        verbose_name = _('SOIC')
-        verbose_name_plural = _('SOIC')
+        verbose_name = _('SOC')
+        verbose_name_plural = _('SOC')
 
 class PMIC(BaseModel):
     desc            = models.CharField(
@@ -147,7 +147,7 @@ class Component(BaseModel):
 # ##################################################
 
 class Build(BaseModel):
-    product         = models.ForeignKey(Product, verbose_name=_('SOIC'))
+    product         = models.ForeignKey(Product, verbose_name=_('SOC'))
     pmic            = models.ForeignKey(
         PMIC, verbose_name=_('PMIC'), blank=True, null=True
     )
