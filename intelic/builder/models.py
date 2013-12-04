@@ -10,7 +10,7 @@ from datetime import timedelta
 
 from intelic.jenkins_handler import icjenkinsjob
 import os, zipfile, signals
-from pprint import pprint
+
 # Create your models here.
 
 # ##################################################
@@ -50,8 +50,20 @@ class Product(BaseModel):
     )
 
     class Meta:
-        verbose_name = _('Product')
-        verbose_name_plural = _('Products')
+        verbose_name = _('SOIC')
+        verbose_name_plural = _('SOIC')
+
+class PMIC(BaseModel):
+    desc            = models.CharField(
+        verbose_name=_('Description'), max_length=255, blank=True, null=True
+    )
+    is_active       = models.BooleanField(
+        verbose_name=_('Is active'), default=True
+    )
+
+    class Meta:
+        verbose_name = _('PMIC')
+        verbose_name_plural = _('PMIC')
 
 class Baseline(BaseModel):
     product        = models.ManyToManyField(Product)
@@ -135,7 +147,10 @@ class Component(BaseModel):
 # ##################################################
 
 class Build(BaseModel):
-    product         = models.ForeignKey(Product, verbose_name=_('Product'))
+    product         = models.ForeignKey(Product, verbose_name=_('SOIC'))
+    pmic            = models.ForeignKey(
+        PMIC, verbose_name=_('PMIC'), blank=True, null=True
+    )
     baseline        = models.ForeignKey(Baseline, verbose_name=_('Baseline'))
     component       = models.ManyToManyField(Component)
     has_components  = models.BooleanField(default=False)
@@ -177,6 +192,8 @@ class Build(BaseModel):
             self.generate_patches_package_name(), 'w'
         )
         for component in self.component.all():
+            if not component.patch_file:
+                continue 
             patches_pkg.write(
                 component.patch_file.path,
                 os.path.basename(component.patch_file.name)

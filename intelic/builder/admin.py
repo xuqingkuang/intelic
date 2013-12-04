@@ -17,6 +17,11 @@ class ProductAdmin(admin.ModelAdmin):
     fields = ('name', 'desc', 'form_class')
     inlines = (DefaultComponentValueInline, )
 
+class PMICAdmin(admin.ModelAdmin):
+    list_display = ('name', 'is_active')
+    search_fields = ('name', )
+    fields = ('name', 'desc')
+
 class BaselineAdmin(admin.ModelAdmin):
     list_display = ('name', 'is_active')
     search_fields = ('name', )
@@ -44,8 +49,9 @@ class BuildAdmin(admin.ModelAdmin):
     search_fields = ('name', )
     inlines = (ProcessInline, )
 
-admin.site.register(models.Baseline, BaselineAdmin)
 admin.site.register(models.Product, ProductAdmin)
+admin.site.register(models.PMIC, PMICAdmin)
+admin.site.register(models.Baseline, BaselineAdmin)
 admin.site.register(models.ComponentType, ComponentTypeAdmin)
 admin.site.register(models.Component, ComponentAdmin)
 admin.site.register(models.Build, BuildAdmin)

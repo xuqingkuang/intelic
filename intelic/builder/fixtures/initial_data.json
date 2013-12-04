@@ -20,6 +20,16 @@
 },
 {
     "pk": 1, 
+    "model": "builder.pmic", 
+    "fields": {
+        "desc": "", 
+        "is_active": true, 
+        "name": "ROHM, BD2610GW", 
+        "slug": "rohm-bd2610gw"
+    }
+},
+{
+    "pk": 1, 
     "model": "builder.baseline", 
     "fields": {
         "product": [
@@ -35,12 +45,20 @@
     "pk": 1, 
     "model": "builder.componenttype", 
     "fields": {
-        "name": "WIFI", 
-        "slug": "wifi"
+        "name": "Memory", 
+        "slug": "memory"
     }
 },
 {
     "pk": 2, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": "EMMC", 
+        "slug": "emmc"
+    }
+},
+{
+    "pk": 3, 
     "model": "builder.componenttype", 
     "fields": {
         "name": "Touch", 
@@ -48,183 +66,225 @@
     }
 },
 {
-    "pk": 3, 
-    "model": "builder.componenttype", 
-    "fields": {
-        "name": "Display", 
-        "slug": "display"
-    }
-},
-{
     "pk": 4, 
     "model": "builder.componenttype", 
     "fields": {
-        "name": "Audio", 
-        "slug": "audio"
+        "name": "Panel", 
+        "slug": "panel"
     }
 },
 {
     "pk": 5, 
     "model": "builder.componenttype", 
     "fields": {
-        "name": "Camera", 
-        "slug": "camera"
+        "name": "Codec", 
+        "slug": "codec"
     }
 },
 {
     "pk": 6, 
     "model": "builder.componenttype", 
     "fields": {
-        "name": "Sensor", 
-        "slug": "sensor"
+        "name": "Camera module 1", 
+        "slug": "camera1"
+    }
+},
+{
+    "pk": 7, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": "Camera module 2", 
+        "slug": "camera2"
+    }
+},
+{
+    "pk": 8, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": "WIFI/BT", 
+        "slug": "wifi_bluetooth"
+    }
+},
+{
+    "pk": 9, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": "GPS", 
+        "slug": "gps"
+    }
+},
+{
+    "pk": 10, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": "NFC", 
+        "slug": "nfc"
+    }
+},
+{
+    "pk": 11, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": "WWAN", 
+        "slug": "wwan"
+    }
+},
+{
+    "pk": 12, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": " Sensor HUB", 
+        "slug": "sensor_hub"
+    }
+},
+{
+    "pk": 13, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": "ALS Sensor", 
+        "slug": "als_sensor"
+    }
+},
+{
+    "pk": 14, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": "Gyro Sensor", 
+        "slug": "gyro_sensor"
+    }
+},
+{
+    "pk": 15, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": "Accelerator Sensor", 
+        "slug": "accelerator_sensor"
+    }
+},
+{
+    "pk": 16, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": "Magnetic Sensor", 
+        "slug": "magnetic_sensor"
+    }
+},
+{
+    "pk": 17, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": "Sar Sensor", 
+        "slug": "sar_sensor"
+    }
+},
+{
+    "pk": 18, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": "Pressure Sensor", 
+        "slug": "pressure_sensor"
+    }
+},
+{
+    "pk": 19, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": "UV Sensor", 
+        "slug": "uv_sensor"
     }
 },
 {
     "pk": 1, 
-    "model": "builder.defaultcomponentvalue", 
-    "fields": {
-        "default_value": "BCM43241", 
-        "product": 1, 
-        "component_type": 1
-    }
-},
-{
-    "pk": 2, 
-    "model": "builder.defaultcomponentvalue", 
-    "fields": {
-        "default_value": "Atmel Maxtouch 1664 mXT1664S", 
-        "product": 1, 
-        "component_type": 2
-    }
-},
-{
-    "pk": 3, 
-    "model": "builder.defaultcomponentvalue", 
-    "fields": {
-        "default_value": "Panasonic 10.1\" eDP 25x14 VVX10T014M00", 
-        "product": 1, 
-        "component_type": 3
-    }
-},
-{
-    "pk": 4, 
-    "model": "builder.defaultcomponentvalue", 
-    "fields": {
-        "default_value": "Realtek ALC5642", 
-        "product": 1, 
-        "component_type": 4
-    }
-},
-{
-    "pk": 5, 
-    "model": "builder.defaultcomponentvalue", 
-    "fields": {
-        "default_value": "ST L3GD20", 
-        "product": 1, 
-        "component_type": 6
-    }
-},
-{
-    "pk": 6, 
-    "model": "builder.defaultcomponentvalue", 
-    "fields": {
-        "default_value": "OV2722", 
-        "product": 1, 
-        "component_type": 5
-    }
-},
-{
-    "pk": 1, 
     "model": "builder.component", 
     "fields": {
         "product": [
             1
         ], 
-        "name": "AIC5672", 
+        "name": "HYNIX,  DC LPDDR3-1067, 2GB, H9CCNNN8KTMLBR-NTM", 
         "baseline": [
             1
         ], 
         "is_active": true, 
-        "patch_file": "uploads/patches/0001-ALC5672_driver_patch_ww33.patch", 
-        "gerrit_url": "", 
-        "type": 4, 
-        "slug": "audio-realtek-aic5640", 
-        "desc": ""
-    }
-},
-{
-    "pk": 2, 
-    "model": "builder.component", 
-    "fields": {
-        "product": [
-            1
-        ], 
-        "name": "AIC5640", 
-        "baseline": [
-            1
-        ], 
-        "is_active": true, 
-        "patch_file": "uploads/patches/AIC5640.patch", 
-        "gerrit_url": "", 
-        "type": 4, 
-        "slug": "audio-aic5640", 
-        "desc": ""
-    }
-},
-{
-    "pk": 3, 
-    "model": "builder.component", 
-    "fields": {
-        "product": [
-            1
-        ], 
-        "name": "RTD2136", 
-        "baseline": [
-            1
-        ], 
-        "is_active": true, 
-        "patch_file": "uploads/patches/rtd2136.patch", 
-        "gerrit_url": "", 
-        "type": 3, 
-        "slug": "display-rtd2136", 
-        "desc": ""
-    }
-},
-{
-    "pk": 4, 
-    "model": "builder.component", 
-    "fields": {
-        "product": [
-            1
-        ], 
-        "name": "NCB3051", 
-        "baseline": [
-            1
-        ], 
-        "is_active": true, 
-        "patch_file": "uploads/patches/ncb3051.patch", 
-        "gerrit_url": "", 
-        "type": 2, 
-        "slug": "touch-ncb3051", 
-        "desc": ""
-    }
-},
-{
-    "pk": 5, 
-    "model": "builder.component", 
-    "fields": {
-        "product": [
-            1
-        ], 
-        "name": "BCM4330", 
-        "baseline": [
-            1
-        ], 
-        "is_active": true, 
-        "patch_file": "uploads/patches/0003-Module-Name-WIFI-and-BT.patch", 
+        "patch_file": "", 
         "gerrit_url": "", 
         "type": 1, 
-        "slug": "wifi-bcm4330", 
+        "slug": "memory-hynix-dc-lpddr3-1067-2gb-h9ccnnn8ktmlbr-ntm", 
+        "desc": ""
+    }
+},
+{
+    "pk": 2, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            1
+        ], 
+        "name": "SAMSUNG, eMMC4.5, 64GB,  KLMCG8GE2A-A001004", 
+        "baseline": [
+            1
+        ], 
+        "is_active": true, 
+        "patch_file": "", 
+        "gerrit_url": "", 
+        "type": 2, 
+        "slug": "emmc-samsung-emmc45-64gb-klmcg8ge2a-a001004", 
+        "desc": ""
+    }
+},
+{
+    "pk": 3, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            1
+        ], 
+        "name": "ATMEL, mXT1664S, Maxtouch 1664", 
+        "baseline": [
+            1
+        ], 
+        "is_active": true, 
+        "patch_file": "", 
+        "gerrit_url": "", 
+        "type": 3, 
+        "slug": "touch-atmel-mxt1664s-maxtouch-1664", 
+        "desc": ""
+    }
+},
+{
+    "pk": 4, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            1
+        ], 
+        "name": "REALTEK, ALC5642", 
+        "baseline": [
+            1
+        ], 
+        "is_active": true, 
+        "patch_file": "", 
+        "gerrit_url": "", 
+        "type": 5, 
+        "slug": "codec-realtek-alc5642", 
+        "desc": ""
+    }
+},
+{
+    "pk": 5, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            1
+        ], 
+        "name": "LITEON ; OMNIVISION, OV2722, 2MP 1/6\";AOET, 1LS0518K", 
+        "baseline": [
+            1
+        ], 
+        "is_active": true, 
+        "patch_file": "", 
+        "gerrit_url": "", 
+        "type": 6, 
+        "slug": "camera-module-1-liteon-omnivision-ov2722-2mp-16aoet-1ls0518k", 
         "desc": ""
     }
 },
@@ -235,15 +295,15 @@
         "product": [
             1
         ], 
-        "name": "MPU6050", 
+        "name": "ABILITY, NL89A142; SONY, IMX175, 8MP; LARGAN, 9547; TDK, 657-ABA", 
         "baseline": [
             1
         ], 
         "is_active": true, 
-        "patch_file": "uploads/patches/mpu6050.patch", 
+        "patch_file": "", 
         "gerrit_url": "", 
-        "type": 6, 
-        "slug": "sensor-mpu6050", 
+        "type": 7, 
+        "slug": "camera-module-2-ability-nl89a142-sony-imx175-8mp-largan-9547-tdk-657-aba", 
         "desc": ""
     }
 },
@@ -254,16 +314,238 @@
         "product": [
             1
         ], 
-        "name": "OV9726", 
+        "name": "MITSUMI, DWM-W095 (SIP); BROADCOM, BCM43241, 2x2 802.11abgn", 
         "baseline": [
             1
         ], 
         "is_active": true, 
-        "patch_file": "uploads/patches/OV9726.patch", 
+        "patch_file": "", 
         "gerrit_url": "", 
-        "type": 5, 
-        "slug": "camera-ov9726", 
+        "type": 8, 
+        "slug": "wifibt-mitsumi-dwm-w095-sip-broadcom-bcm43241-2x2-80211abgn", 
         "desc": ""
+    }
+},
+{
+    "pk": 8, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            1
+        ], 
+        "name": "HUAWEI, ME906V, LTE/3G; QUALCOMM, MDM9615", 
+        "baseline": [
+            1
+        ], 
+        "is_active": true, 
+        "patch_file": "", 
+        "gerrit_url": "", 
+        "type": 11, 
+        "slug": "wwan-huawei-me906v-lte3g-qualcomm-mdm9615", 
+        "desc": ""
+    }
+},
+{
+    "pk": 9, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            1
+        ], 
+        "name": "STMICRO, STM32F103CBY6TR", 
+        "baseline": [
+            1
+        ], 
+        "is_active": true, 
+        "patch_file": "", 
+        "gerrit_url": "", 
+        "type": 12, 
+        "slug": "sensor-hub-stmicro-stm32f103cby6tr", 
+        "desc": ""
+    }
+},
+{
+    "pk": 10, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            1
+        ], 
+        "name": "CAPELLA, CM32181", 
+        "baseline": [
+            1
+        ], 
+        "is_active": true, 
+        "patch_file": "", 
+        "gerrit_url": "", 
+        "type": 13, 
+        "slug": "als-sensor-capella-cm32181", 
+        "desc": ""
+    }
+},
+{
+    "pk": 11, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            1
+        ], 
+        "name": "STMICRO, L3GD20", 
+        "baseline": [
+            1
+        ], 
+        "is_active": true, 
+        "patch_file": "", 
+        "gerrit_url": "", 
+        "type": 14, 
+        "slug": "gyro-sensor-stmicro-l3gd20", 
+        "desc": ""
+    }
+},
+{
+    "pk": 12, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            1
+        ], 
+        "name": "STMICRO, LSM303DLHC", 
+        "baseline": [
+            1
+        ], 
+        "is_active": true, 
+        "patch_file": "", 
+        "gerrit_url": "", 
+        "type": 15, 
+        "slug": "accelerator-sensor-stmicro-lsm303dlhc", 
+        "desc": ""
+    }
+},
+{
+    "pk": 13, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            1
+        ], 
+        "name": "STMICRO, STM8T143AU62TTR", 
+        "baseline": [
+            1
+        ], 
+        "is_active": true, 
+        "patch_file": "", 
+        "gerrit_url": "", 
+        "type": 17, 
+        "slug": "sar-sensor-stmicro-stm8t143au62ttr", 
+        "desc": ""
+    }
+},
+{
+    "pk": 1, 
+    "model": "builder.build", 
+    "fields": {
+        "product": 1, 
+        "baseline": 1, 
+        "created_at": "2013-12-04T02:55:12.059Z", 
+        "component": [
+            1, 
+            2, 
+            3, 
+            4, 
+            5, 
+            6, 
+            7, 
+            8, 
+            9, 
+            10, 
+            11, 
+            12, 
+            13
+        ], 
+        "has_components": true, 
+        "slug": "baylake-ww34-2013-12-04-025512", 
+        "pmic": 1, 
+        "name": "baylake-ww34-2013-12-04-02:55:12"
+    }
+},
+{
+    "pk": 2, 
+    "model": "builder.build", 
+    "fields": {
+        "product": 1, 
+        "baseline": 1, 
+        "created_at": "2013-12-04T02:57:50.505Z", 
+        "component": [
+            1, 
+            2, 
+            3, 
+            4, 
+            5, 
+            6, 
+            7, 
+            8, 
+            9, 
+            10, 
+            11, 
+            12, 
+            13
+        ], 
+        "has_components": true, 
+        "slug": "baylake-ww34-2013-12-04-025750", 
+        "pmic": 1, 
+        "name": "baylake-ww34-2013-12-04-02:57:50"
+    }
+},
+{
+    "pk": 1, 
+    "model": "builder.process", 
+    "fields": {
+        "status": "Processing", 
+        "url": null, 
+        "build": 1, 
+        "progress": 0, 
+        "message": null, 
+        "started_at": "2013-12-04T02:55:12.208Z", 
+        "type": "Build"
+    }
+},
+{
+    "pk": 2, 
+    "model": "builder.process", 
+    "fields": {
+        "status": "Processing", 
+        "url": null, 
+        "build": 1, 
+        "progress": 0, 
+        "message": null, 
+        "started_at": "2013-12-04T02:55:12.212Z", 
+        "type": "Package"
+    }
+},
+{
+    "pk": 3, 
+    "model": "builder.process", 
+    "fields": {
+        "status": "Processing", 
+        "url": null, 
+        "build": 2, 
+        "progress": 0, 
+        "message": "2:46:02 remaining", 
+        "started_at": "2013-12-04T02:57:50.638Z", 
+        "type": "Build"
+    }
+},
+{
+    "pk": 4, 
+    "model": "builder.process", 
+    "fields": {
+        "status": "Completed", 
+        "url": "http://example.com/media/patches/baylake-ww34-2013-12-04-025750.zip", 
+        "build": 2, 
+        "progress": 100, 
+        "message": "0:00:00 remaining", 
+        "started_at": "2013-12-04T02:57:50.643Z", 
+        "type": "Package"
     }
 }
 ]

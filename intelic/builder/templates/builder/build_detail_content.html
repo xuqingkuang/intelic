@@ -1,12 +1,16 @@
 {% load i18n %}<fieldset>
     <legend>{% trans "Config" %}</legend>
     <div class="row-fluid">
-        <div class="span3">{% trans "Baseline" %}</div>
-        <div class="span9">{{ build.baseline }}</div>
+        <div class="span3">{% trans "SOIC" %}</div>
+        <div class="span9">{{ build.product }}</div>
     </div>
     <div class="row-fluid">
-        <div class="span3">{% trans "Product" %}</div>
-        <div class="span9">{{ build.product }}</div>
+        <div class="span3">{% trans "PMIC" %}</div>
+        <div class="span9">{{ build.pmic }}</div>
+    </div>
+    <div class="row-fluid">
+        <div class="span3">{% trans "baseline" %}</div>
+        <div class="span9">{{ build.baseline }}</div>
     </div>
 </fieldset>
 <fieldset>

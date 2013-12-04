@@ -32,12 +32,13 @@
 <script type="text/javascript" charset="utf-8">
     var $selectorBaseline = $('#id_baseline'),
         $containerComponent = $('#componentContainer'),
-        $titleComponent = $containerComponent.find('legend');
+        $titleComponent = $containerComponent.find('legend'),
+        $emptyLabelOption = $('<option value=""></option>').text('{% trans "NULL" %}');
 
     $('#id_product').change(function(e) {
         if ($(this).val() == '') {
-            $selectorBaseline.html($('<option value="">---------</option>'));
-            $containerComponent.html('');
+            $selectorBaseline.html();
+            $containerComponent.html($emptyLabelOption);
             $('#btnReset, #btnDownloadComponent').prop('disabled', true);
             return false;
         }
@@ -56,7 +57,7 @@
             },
             'success': function(returnObj) {
                 // Clean old data
-                $selectorBaseline.html($('<option value="">---------</option>'));
+                $selectorBaseline.html($emptyLabelOption);
                 $containerComponent.html('');
 
                 // Append new data
