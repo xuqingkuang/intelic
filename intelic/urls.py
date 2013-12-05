@@ -6,7 +6,6 @@ from django.conf import settings
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
-from django.contrib.auth import urls as auth_urls
 admin.autodiscover()
 
 class HomeRedirectView(RedirectView):
@@ -28,7 +27,7 @@ urlpatterns = patterns('',
 
     url(r'^builder/', include('intelic.builder.urls')),
 
-    url(r'^accounts/', include(auth_urls)),
+    url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^accounts/', include('intelic.account.urls')),
 )
 

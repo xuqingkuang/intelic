@@ -4,6 +4,13 @@
 {% block breadcrumbs %}
 {% endblock %}
 
+{% block extrahead %}
+{{ block.super }}
+<style type="text/css" media="screen">
+    tr a { cursor: pointer; }
+</style>
+{% endblock %}
+
 {% block content %}
 <ul class="object-tools pull-right">
     <li>
@@ -12,5 +19,58 @@
         </a>
     </li>
 </ul>
-<h2>The page is not implementated yet.</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>{% trans "Name" %}</th>
+            <th>{% trans "SOC" %}</th>
+            <th>{% trans "PMIC" %}</th>
+            <th>{% trans "Baseline" %}</th>
+            <th>{% trans "Created at" %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for build in builds %}
+        <tr data-url="{{ build.get_absolute_url }}">
+            <td><a hef="{{ build.get_absolute_url }}">{{ build }}</a></td>
+            <td>{{ build.product }}</td>
+            <td>{{ build.pmic }}</td>
+            <td>{{ build.baseline }}</td>
+            <td>{{ build.created_at }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" class="text-center">{% trans "No build found" %}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if is_paginated %}
+<div class="pagination pagination-centered">
+    <ul>
+        {% if page_obj.has_previous %}
+        <li><a href="?page={{ page_obj.previous_page_number }}">Prev</a></li>
+        {% endif %}
+        {% for i in paginator.page_range %}
+        {% ifequal page_obj.number i %}
+        <li class="active"><a href="javascript:void(0)">{{ i }}</a></li>
+        {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+        {% endifequal %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <li><a href="?page={{ page_obj.next_page_number }}">Next</a></li>
+        {% endif %}
+    </ul>
+</div><!-- div.pagination -->
+{% endif %}
+{% endblock %}
+
+{% block js_footer %}
+<script type="text/javascript" charset="utf-8">
+$('tr').click(function(e) {
+    window.location.href=$(this).attr('data-url');
+})
+</script>
 {% endblock %}

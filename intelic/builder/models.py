@@ -161,6 +161,7 @@ class Build(BaseModel):
     class Meta:
         verbose_name = _('Build')
         verbose_name_plural = _('Builds')
+        ordering = ('-pk', )
 
     def save_components(self, components):
         has_components = False

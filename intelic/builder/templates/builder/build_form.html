@@ -20,12 +20,26 @@
     </fieldset>
     <div class="control-group">
         <div class="controls">
-            <input type="submit" value="{% trans "Build" %}" class="btn btn-primary" />
+            <input type="submit" value="{% trans "Next" %}" class="btn btn-primary" />
             <input id="btnReset" type="reset" value="{% trans "Default" %}" class="btn" disabled />
-            <input id="btnDownloadComponent" type="button" value="{% trans "Component download list" %}" class="btn" disabled />
+            <input id="btnPopupDownloadComponentList" type="button" value="{% trans "Download component list" %}" class="btn" disabled />
         </div>
     </div>
 </form>
+
+<div id="modalDownloadComponentList" class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+    <h3>{% trans "Download component list" %}</h3>
+  </div>
+  <div class="modal-body">
+    <p>{% trans "Please click following link with right button and select 'Save link as...'." %}</p>
+    <p><a id="btnDownloadComponent" href="javascript:void(0)" target="_blank" class="btn btn-primary">{% trans "Download component list" %}</a></p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" data-dismiss="modal" aria-hidden="true" class="btn">{% trans "Close" %}</a>
+  </div>
+</div>
 {% endblock %}
 
 {% block js_footer %}
@@ -39,7 +53,7 @@
         if ($(this).val() == '') {
             $selectorBaseline.html();
             $containerComponent.html($emptyLabelOption);
-            $('#btnReset, #btnDownloadComponent').prop('disabled', true);
+            $('#btnReset, #btnPopupDownloadComponentList').prop('disabled', true);
             return false;
         }
         
@@ -76,11 +90,11 @@
     $selectorBaseline.change(function(e) {
         var $self = $(this);
         if ($self.val() == '') {
-            $('#btnReset, #btnDownloadComponent').prop('disabled', true);
+            $('#btnReset, #btnPopupDownloadComponentList').prop('disabled', true);
             $containerComponent.html('');
             return false
         }
-        $('#btnReset, #btnDownloadComponent').prop('disabled', false);
+        $('#btnReset, #btnPopupDownloadComponentList').prop('disabled', false);
         $.ajax({
             'url': '{% url "builder_api_get_components_form" %}',
             'method': 'GET',
@@ -101,6 +115,11 @@
             }
         });
     });
+    
+    $('#btnPopupDownloadComponentList').click(function(e) {
+        $('#modalDownloadComponentList').modal('show');
+        $('#btnDownloadComponent').attr('href', '{% url "build_download_config_file" %}?' + $('#createBuildForm').serialize());
+    })
     
     $('#btnDownloadComponent').click(function(e) {
         window.open(

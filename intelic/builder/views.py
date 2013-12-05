@@ -24,6 +24,7 @@ class TitleMixin(object):
 class BuildListView(LoginRequiredMixin, TitleMixin, ListView):
     model = models.Build
     title = _('Build list')
+    context_object_name = 'builds'
 
 class BuildCreateView(LoginRequiredMixin, TitleMixin, CreateView):
     model = models.Build
@@ -32,7 +33,7 @@ class BuildCreateView(LoginRequiredMixin, TitleMixin, CreateView):
 
     def get_form(self, form_class):
         form = super(BuildCreateView, self).get_form(form_class)
-        if self.request.method == "POST":
+        if self.request.method == "POST" and self.request.REQUEST.get('product'):
             form.update_by_product(product = self.request.REQUEST['product'])
         return form
 
@@ -82,9 +83,10 @@ class BuildConfigDownloadView(LoginRequiredMixin, TemplateView):
         context['baseline'] = models.Baseline.objects.get(
             pk = self.request.REQUEST.get('baseline')
         )
-        context['pmics'] = models.Baseline.objects.filter(
-            pk__in = self.request.REQUEST.getlist('pmic')
-        )
+        if self.request.REQUEST.get('pmic'):
+            context['pmics'] = models.Baseline.objects.filter(
+                pk__in = self.request.REQUEST.getlist('pmic')
+            )
         component_form_class = getattr(forms, context['product'].form_class.name)
         component_form = component_form_class(
             self.request.REQUEST,
