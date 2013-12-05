@@ -21,6 +21,7 @@ var container = $('#buildDetailContainer');
 var triggerProcess = function(e) {
     var $target = $(e.target);
     if (!$target.attr('data-action')) {
+        window.location.href = $target.attr('href');
         return false;
     }
     var action = $target.attr('data-action'),
