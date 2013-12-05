@@ -120,7 +120,7 @@
         $('#componentContainer').find('select').each(function() {
             var $self = $(this),
                 $options = $self.find('option');
-            if ($options.length == 0) {
+            if ($options.length < 2) {
                 return false;
             }
             $options.removeAttr('selected');
