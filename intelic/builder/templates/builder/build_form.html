@@ -121,7 +121,7 @@
             var $self = $(this),
                 $options = $self.find('option');
             if ($options.length < 2) {
-                return false;
+                return 'continue';
             }
             $options.removeAttr('selected');
             $($options[1]).attr('selected', 'selected');
