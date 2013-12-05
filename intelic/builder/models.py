@@ -221,6 +221,23 @@ class Build(BaseModel):
     def get_absolute_url(self):
         return reverse('build_detail', args=(self.slug, ))
 
+    def get_components(self):
+        # FIXME: Hard code find component type here, it's a bug.
+        component_types = ComponentType.objects.all()
+        components = self.component.all()
+        return_components = []
+        for component_type in component_types:
+            for component in components:
+                if component.type == component_type:
+                    return_components.append(component)
+                    break;
+            else:
+                return_components.append({
+                    'type': component_type,
+                    'name': None
+                })
+        return return_components
+
     def generate_patches_package_name(self, root = settings.MEDIA_ROOT):
         return os.path.join(root, 'patches', self.slug + '.zip')
 

@@ -5,4 +5,4 @@ PMIC: {{ pmic }}{% endfor %}
 Platform: {{ product }}
 Baseline: {{ baseline }}
 {% for component in components %}
-{{ component.type }}: {{ component.name }}{% endfor %}
+{{ component.type }}: {{ component.name|default:"NULL" }}{% endfor %}

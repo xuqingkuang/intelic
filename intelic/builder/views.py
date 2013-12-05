@@ -94,5 +94,17 @@ class BuildConfigDownloadView(LoginRequiredMixin, TemplateView):
             init_baseline = context['baseline'],
         )
         if component_form.is_valid():
-            context['components'] = component_form.cleaned_data['components']
+            context['components'] = []
+            # FIXME: Hard code find component type here, it's a bug.
+            component_types = models.ComponentType.objects.all()
+            for component_type in component_types:
+                for component in component_form.cleaned_data['components']:
+                    if component.type == component_type:
+                        context['components'].append(component)
+                        break;
+                else:
+                    context['components'].append({
+                        'type': component_type,
+                        'name': None
+                    })
         return context

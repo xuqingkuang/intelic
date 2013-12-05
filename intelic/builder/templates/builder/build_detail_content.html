@@ -15,10 +15,10 @@
 </fieldset>
 <fieldset>
     <legend>{% trans "Components" %}</legend>
-    {% for component in build.component.all %}
+    {% for component in build.get_components %}
     <div class="row-fluid">
         <div class="span3">{{ component.type }}</div>
-        <div class="span9">{{ component }}</div>
+        <div class="span9">{{ component.name|default:"NULL" }}</div>
     </div>
     {% empty %}
     <div class="row-fluid text-center">
