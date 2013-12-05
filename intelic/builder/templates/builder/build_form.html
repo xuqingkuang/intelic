@@ -21,7 +21,7 @@
     <div class="control-group">
         <div class="controls">
             <input type="submit" value="{% trans "Next" %}" class="btn btn-primary" />
-            <input id="btnReset" type="reset" value="{% trans "Default" %}" class="btn" disabled />
+            <input id="btnReset" type="button" value="{% trans "Default" %}" class="btn" disabled />
             <input id="btnPopupDownloadComponentList" type="button" value="{% trans "Download component list" %}" class="btn" disabled />
         </div>
     </div>
@@ -116,10 +116,22 @@
         });
     });
     
+    $("#btnReset").click(function(e) {
+        $('#componentContainer').find('select').each(function() {
+            var $self = $(this),
+                $options = $self.find('option');
+            if ($options.length == 0) {
+                return false;
+            }
+            $options.removeAttr('selected');
+            $($options[1]).attr('selected', 'selected');
+        })
+    });
+    
     $('#btnPopupDownloadComponentList').click(function(e) {
         $('#modalDownloadComponentList').modal('show');
         $('#btnDownloadComponent').attr('href', '{% url "build_download_config_file" %}?' + $('#createBuildForm').serialize());
-    })
+    });
     
     $('#btnDownloadComponent').click(function(e) {
         window.open(
