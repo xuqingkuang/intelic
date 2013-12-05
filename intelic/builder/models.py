@@ -164,13 +164,12 @@ class Build(BaseModel):
         ordering = ('-pk', )
 
     def save_components(self, components):
-        has_components = False
+        self.has_components = False
         for component in components:
-            has_components = True
+            if component.patch_file:
+                self.has_components = True
             self.component.add(component)
-        if has_components:
-            self.has_components = True
-            self.save()
+        self.save()
         signals.build_added_components.send(sender=self.__class__, instance=self)
 
     def create_build_job(self):
