@@ -287,7 +287,7 @@ class Process(models.Model):
         # FIXME: Ugly code here for demo.
         component_ids = self.build.component.values_list('pk', flat=True)
         for id in component_ids:
-            if id > 14:
+            if id > 14 and id != 17:
                 estimated_seconds = 10000
                 break
         if self.type == 'Package':
