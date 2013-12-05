@@ -283,10 +283,13 @@ class Process(models.Model):
 
     def get_progress(self, commit=False):
         now =  timezone.now()
-        if self.type == 'Build':
-            estimated_seconds = 10000
-        if self.type == 'Build' and not self.build.has_components:
-            estimated_seconds = 60
+        estimated_seconds = 60
+        # FIXME: Ugly code here for demo.
+        component_ids = self.build.component.values_list('pk', flat=True)
+        for id in component_ids:
+            if id > 14:
+                estimated_seconds = 10000
+                break
         if self.type == 'Package':
             estimated_seconds = 30
         progress = float((now - self.started_at).seconds)/estimated_seconds*100
