@@ -1,8 +1,7 @@
 SoC Info: {{ product }}
 {% for pmic in pmics %}
 PMIC: {{ pmic }}{% endfor %}
-
-Platform: {{ product }}
 Baseline: {{ baseline }}
+
 {% for component in components %}
 {{ component.type }}: {{ component.name|default:"NULL" }}{% endfor %}

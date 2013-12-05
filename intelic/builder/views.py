@@ -84,7 +84,7 @@ class BuildConfigDownloadView(LoginRequiredMixin, TemplateView):
             pk = self.request.REQUEST.get('baseline')
         )
         if self.request.REQUEST.get('pmic'):
-            context['pmics'] = models.Baseline.objects.filter(
+            context['pmics'] = models.PMIC.objects.filter(
                 pk__in = self.request.REQUEST.getlist('pmic')
             )
         component_form_class = getattr(forms, context['product'].form_class.name)
