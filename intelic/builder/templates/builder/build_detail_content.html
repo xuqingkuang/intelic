@@ -39,10 +39,10 @@
             </div>
         </div>
         {% ifequal process.progress 100 %}
-        <div class="span1"><a href="{{ process.url }}" target="_blank" class="btn">{% trans "Download" %}</a></div>
+        <div class="span1"><a href="{{ process.url }}" target="_blank">{% trans "Download" %}</a></div>
         {% else %}
         <div class="span1">
-            <a href="javascript:void(0)" data-pk="{{ process.pk }}" data-action="cancel" class="btn">{% trans "Cancel" %}</a>
+            <a href="javascript:void(0)" data-pk="{{ process.pk }}" data-action="cancel">{% trans "Cancel" %}</a>
         </div>
         <div class="span2">
             {{ process.message|default:""|safe }}
@@ -56,7 +56,7 @@
             </div>
         </div>
         <div class="span1">
-            <a href="javascript:void(0)" data-pk="{{ process.pk }}"  data-action="start" class="btn">{% trans "Build" %}</a>
+            <a href="javascript:void(0)" data-pk="{{ process.pk }}"  data-action="start">{% trans "Build" %}</a>
         </div>
         {% endif %}
     </div>
