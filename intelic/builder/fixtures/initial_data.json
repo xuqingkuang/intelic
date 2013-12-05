@@ -14,7 +14,7 @@
         "form_class": 1, 
         "desc": "", 
         "is_active": true, 
-        "name": "baylake", 
+        "name": "BayTrail - T", 
         "slug": "baylake"
     }
 },
@@ -37,7 +37,7 @@
         ], 
         "desc": "", 
         "is_active": true, 
-        "name": "ww34", 
+        "name": "WW34", 
         "slug": "ww34"
     }
 },
@@ -281,7 +281,7 @@
             1
         ], 
         "is_active": true, 
-        "patch_file": "", 
+        "patch_file": "uploads/patches/0001-bf3905-raw-data-works_1.patch", 
         "gerrit_url": "", 
         "type": 6, 
         "slug": "camera-module-1-liteon-omnivision-ov2722-2mp-16aoet-1ls0518k", 
@@ -441,111 +441,79 @@
     }
 },
 {
-    "pk": 1, 
-    "model": "builder.build", 
+    "pk": 14, 
+    "model": "builder.component", 
     "fields": {
-        "product": 1, 
-        "baseline": 1, 
-        "created_at": "2013-12-04T02:55:12.059Z", 
-        "component": [
-            1, 
-            2, 
-            3, 
-            4, 
-            5, 
-            6, 
-            7, 
-            8, 
-            9, 
-            10, 
-            11, 
-            12, 
-            13
+        "product": [
+            1
         ], 
-        "has_components": true, 
-        "slug": "baylake-ww34-2013-12-04-025512", 
-        "pmic": 1, 
-        "name": "baylake-ww34-2013-12-04-02:55:12"
-    }
-},
-{
-    "pk": 2, 
-    "model": "builder.build", 
-    "fields": {
-        "product": 1, 
-        "baseline": 1, 
-        "created_at": "2013-12-04T02:57:50.505Z", 
-        "component": [
-            1, 
-            2, 
-            3, 
-            4, 
-            5, 
-            6, 
-            7, 
-            8, 
-            9, 
-            10, 
-            11, 
-            12, 
-            13
+        "name": "REALTEK, ALC5640", 
+        "baseline": [
+            1
         ], 
-        "has_components": true, 
-        "slug": "baylake-ww34-2013-12-04-025750", 
-        "pmic": 1, 
-        "name": "baylake-ww34-2013-12-04-02:57:50"
+        "is_active": true, 
+        "patch_file": "uploads/patches/alc5640_audio_3.patch", 
+        "gerrit_url": "", 
+        "type": 5, 
+        "slug": "codec-realtek-alc5640", 
+        "desc": ""
     }
 },
 {
-    "pk": 1, 
-    "model": "builder.process", 
+    "pk": 15, 
+    "model": "builder.component", 
     "fields": {
-        "status": "Processing", 
-        "url": null, 
-        "build": 1, 
-        "progress": 0, 
-        "message": null, 
-        "started_at": "2013-12-04T02:55:12.208Z", 
-        "type": "Build"
+        "product": [
+            1
+        ], 
+        "name": "LITEON, 12P2BA536; OMNIVISION, OV5693, 5MP; GLORYTEK,  Glory 1503; MWT, AF85D-S32Q", 
+        "baseline": [
+            1
+        ], 
+        "is_active": true, 
+        "patch_file": "uploads/patches/0001-OV5693_linux_driver_ww33_2.patch", 
+        "gerrit_url": "", 
+        "type": 7, 
+        "slug": "camera-module-2-liteon-12p2ba536-omnivision-ov5693-5mp-glorytek-glory-1503-mwt-af85d-s32q", 
+        "desc": ""
     }
 },
 {
-    "pk": 2, 
-    "model": "builder.process", 
+    "pk": 16, 
+    "model": "builder.component", 
     "fields": {
-        "status": "Processing", 
-        "url": null, 
-        "build": 1, 
-        "progress": 0, 
-        "message": null, 
-        "started_at": "2013-12-04T02:55:12.212Z", 
-        "type": "Package"
+        "product": [
+            1
+        ], 
+        "name": "REALTEK, RTL8723BS-CG, 1x1 SB 802.11bgn, SDIO", 
+        "baseline": [
+            1
+        ], 
+        "is_active": true, 
+        "patch_file": "", 
+        "gerrit_url": "", 
+        "type": 8, 
+        "slug": "wifibt-realtek-rtl8723bs-cg-1x1-sb-80211bgn-sdio", 
+        "desc": ""
     }
 },
 {
-    "pk": 3, 
-    "model": "builder.process", 
+    "pk": 17, 
+    "model": "builder.component", 
     "fields": {
-        "status": "Processing", 
-        "url": null, 
-        "build": 2, 
-        "progress": 0, 
-        "message": "2:46:02 remaining", 
-        "started_at": "2013-12-04T02:57:50.638Z", 
-        "type": "Build"
-    }
-},
-{
-    "pk": 4, 
-    "model": "builder.process", 
-    "fields": {
-        "status": "Completed", 
-        "url": "http://example.com/media/patches/baylake-ww34-2013-12-04-025750.zip", 
-        "build": 2, 
-        "progress": 100, 
-        "message": "0:00:00 remaining", 
-        "started_at": "2013-12-04T02:57:50.643Z", 
-        "type": "Package"
+        "product": [
+            1
+        ], 
+        "name": "PANASONIC, VVX10T014M00, 10.1\", EDP, 25x14 24bit", 
+        "baseline": [
+            1
+        ], 
+        "is_active": true, 
+        "patch_file": "", 
+        "gerrit_url": "", 
+        "type": 4, 
+        "slug": "panel-panasonic-vvx10t014m00-101-edp-25x14-24bit", 
+        "desc": ""
     }
 }
 ]
