@@ -21,6 +21,7 @@
     <div class="control-group">
         <div class="controls">
             <input type="submit" value="{% trans "Next" %}" class="btn btn-primary" />
+            <input id="btnClear" type="button" value="{% trans "Clear" %}" class="btn" />
             <input id="btnReset" type="button" value="{% trans "Default" %}" class="btn" disabled />
             <input id="btnPopupDownloadComponentList" type="button" value="{% trans "Download component list" %}" class="btn" disabled />
         </div>
@@ -43,11 +44,13 @@
 {% endblock %}
 
 {% block js_footer %}
+<script type="text/javascript" src="http://cdn.staticfile.org/jquery-cookie/1.3.1/jquery.cookie.min.js" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
     var $selectorBaseline = $('#id_baseline'),
         $containerComponent = $('#componentContainer'),
         $titleComponent = $containerComponent.find('legend'),
-        $emptyLabelOption = $('<option value=""></option>').text('{% trans "NULL" %}');
+        $emptyLabelOption = $('<option value=""></option>').text('{% trans "NULL" %}'),
+        formRestoringLock = false;
 
     $('#id_product').change(function(e) {
         if ($(this).val() == '') {
@@ -83,6 +86,11 @@
                         .text(returnObj[i]['fields']['name'])
                         .appendTo($selectorBaseline);
                 }
+
+                // Restore form data
+                var formData = readFormDataFromCookie();
+                $selectorBaseline.val(formData['baseline']);
+                $selectorBaseline.trigger('change');
             }
         });
     });
@@ -108,7 +116,17 @@
                 $containerComponent.prepend($titleComponent);
                 $containerComponent.show();
                 
-                // Determine download component button status
+                // Restore form data
+                var formData = readFormDataFromCookie();
+                $containerComponent.find('select').each(function(e) {
+                    var $element = $(this);
+                        elementValue = formData[$element.attr('name')];
+                    if (elementValue == '') {
+                        return true; // continue to next element
+                    }
+                    $element.val(elementValue);
+                });
+                formRestoringLock = false;
             },
             'failure': function(msg) {
                 alert(msg);
@@ -137,6 +155,52 @@
         window.open(
             '{% url "build_download_config_file" %}?' + $('#createBuildForm').serialize()
         )
+    });
+
+    $('#btnClear').click(function(e) {
+        $('select').val('');
+        $('#id_baseline').html($emptyLabelOption);
+        $containerComponent.html('');
+        $('#btnReset, #btnPopupDownloadComponentList').prop('disabled', true);
+        $.cookie('formData', '');
+    });
+
+    var readFormDataFromCookie = function() {
+        var strFormData = $.cookie('formData');
+        if (!strFormData) {
+            return false;
+        }
+        var formDataSplited = strFormData.split('&');
+        var formData = {};
+        for (var i=0; i<formDataSplited.length; i++) {
+            var key = formDataSplited[i].split('=')[0],
+                value = formDataSplited[i].split('=')[1];
+            formData[key] = value;
+        }
+        return formData;
+    }
+
+    var restoreForm = function() {
+        formRestoringLock = true;
+        var formData = readFormDataFromCookie();
+
+        // Hardcode here for solve async issue.
+        $('#id_product').val(formData['product']);
+        $('#id_product').trigger('change');
+        $('#id_pmic').val(formData['pmic']);
+    }
+
+    $('#createBuildForm').on('change', function(e) {
+        if (!formRestoringLock) {
+            $.cookie('formData', $(this).serialize());
+        }
+    });
+
+    $(window).on('load', function(e) {
+        restoreForm();
+        $('#createBuildForm').find('select').change(function(e) {
+            $('#createBuildForm').trigger('change');
+        });
     });
 </script>
 {% endblock %}
