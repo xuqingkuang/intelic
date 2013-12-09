@@ -22,7 +22,7 @@
         <div class="controls">
             <input type="submit" value="{% trans "Next" %}" class="btn btn-primary" />
             <input id="btnClear" type="button" value="{% trans "Clear" %}" class="btn" />
-            <input id="btnReset" type="button" value="{% trans "Default" %}" class="btn" disabled />
+            <input id="btnDefault" type="button" value="{% trans "Default" %}" class="btn" disabled />
             <input id="btnPopupDownloadComponentList" type="button" value="{% trans "Download component list" %}" class="btn" disabled />
         </div>
     </div>
@@ -56,7 +56,7 @@
         if ($(this).val() == '') {
             $selectorBaseline.html();
             $containerComponent.html($emptyLabelOption);
-            $('#btnReset, #btnPopupDownloadComponentList').prop('disabled', true);
+            $('#btnDefault, #btnPopupDownloadComponentList').prop('disabled', true);
             return false;
         }
         
@@ -98,11 +98,11 @@
     $selectorBaseline.change(function(e) {
         var $self = $(this);
         if ($self.val() == '') {
-            $('#btnReset, #btnPopupDownloadComponentList').prop('disabled', true);
+            $('#btnDefault, #btnPopupDownloadComponentList').prop('disabled', true);
             $containerComponent.html('');
             return false
         }
-        $('#btnReset, #btnPopupDownloadComponentList').prop('disabled', false);
+        $('#btnDefault, #btnPopupDownloadComponentList').prop('disabled', false);
         $.ajax({
             'url': '{% url "builder_api_get_components_form" %}',
             'method': 'GET',
@@ -134,7 +134,7 @@
         });
     });
     
-    $("#btnReset").click(function(e) {
+    $("#btnDefault").click(function(e) {
         $('#componentContainer').find('select').each(function() {
             var $self = $(this),
                 $options = $self.find('option');
@@ -143,7 +143,8 @@
             }
             $options.removeAttr('selected');
             $($options[1]).attr('selected', 'selected');
-        })
+        });
+        $('#createBuildForm').trigger('change');
     });
     
     $('#btnPopupDownloadComponentList').click(function(e) {
@@ -161,7 +162,7 @@
         $('select').val('');
         $('#id_baseline').html($emptyLabelOption);
         $containerComponent.html('');
-        $('#btnReset, #btnPopupDownloadComponentList').prop('disabled', true);
+        $('#btnDefault, #btnPopupDownloadComponentList').prop('disabled', true);
         $.cookie('formData', '');
     });
 
