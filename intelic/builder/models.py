@@ -302,6 +302,10 @@ class Process(models.Model):
     def get_progress(self, commit=False):
         now =  timezone.now()
         estimated_seconds = 60
+        max_percents = {
+            'Build': 99,
+            'Package': 100,
+        }
         # FIXME: Ugly code here for demo.
         component_ids = self.build.component.values_list('pk', flat=True)
         for id in component_ids:
@@ -313,8 +317,8 @@ class Process(models.Model):
         progress = float((now - self.started_at).seconds)/estimated_seconds*100
         remaining_seconds = estimated_seconds  - (now - self.started_at).seconds
         remaining_str = timedelta(seconds=remaining_seconds)
-        if remaining_seconds < 0 or progress > 99:
-            progress, remaining_seconds = 99, 0
+        if remaining_seconds < 0 or progress > max_percents.get(self.type):
+            progress, remaining_seconds = max_percents.get(self.type), 0
         if progress == 100 and commit:
             self.status = 'Completed'
         if commit:
@@ -370,7 +374,7 @@ def update_process_handler(sender, instance, **kwargs):
                 process.save()                
 
 def post_patches_package_create_handler(sender, instance, patches_package, **kwargs):
-    url = 'http://%s%s' % (
+    url = 'http://%s%s:8000' % (
         Site.objects.get_current(),
         instance.generate_patches_package_name(root = settings.MEDIA_URL)
     )
