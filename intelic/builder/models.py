@@ -8,8 +8,10 @@ from django.contrib.sites.models import Site
 
 from datetime import timedelta
 
-from intelic.jenkins_handler import icjenkinsjob
+from intelic.jenkins_handler import jenkins_handler
 import os, zipfile, signals
+
+from pprint import pprint
 
 # Create your models here.
 
@@ -172,14 +174,12 @@ class Build(BaseModel):
         self.save()
         signals.build_added_components.send(sender=self.__class__, instance=self)
 
-    def create_build_job(self):
+    def create_build_process(self):
         self.process_set.create(
             type = 'Build',
             status = 'Processing',
-            progress = '0'
+            progress = 0
         )
-        if icjenkinsjob:
-            self.create_jenkins_build()
 
     def create_patches_package(self):
         self.process_set.create(
@@ -194,6 +194,8 @@ class Build(BaseModel):
         for component in self.component.all():
             if not component.patch_file:
                 continue 
+            if not os.path.isfile(component.patch_file.path):
+                continue
             patches_pkg.write(
                 component.patch_file.path,
                 os.path.basename(component.patch_file.name)
@@ -202,20 +204,6 @@ class Build(BaseModel):
         signals.post_patches_package_create.send(
             sender=self.__class__, instance=self, patches_package = patches_pkg
         )
-
-    def create_jenkins_build(self):
-        gerrit_change_numbers = []
-        for component in self.component.all():
-            gerrit_id = component.get_gerrit_change_number()
-            if gerrit_id:
-                gerrit_change_numbers.append(gerrit_id)
-        jenkins_params = {
-            'changes': ' '.join(gerrit_change_numbers),
-            'base_version': self.baseline.name,
-            'product': self.product.name,
-        }
-        # Do Jenkins job.
-        icjenkinsjob.trigger_build(jenkins_params)
 
     def get_absolute_url(self):
         return reverse('build_detail', args=(self.slug, ))
@@ -272,11 +260,42 @@ class Process(models.Model):
         self.progress = 0
         self.started_at = timezone.now()
         self.save()
+        
+        if self.type == 'Build':
+            self.create_jenkins_job()
 
     def cancel(self):
         self.progress = 0
         self.started_at = None
         self.save()
+
+    def create_jenkins_job(self):
+        if not jenkins_handler:
+            return
+        params = self.get_jenkins_params()
+        jenkins_handler.trigger(params)
+        build_id = jenkins_handler.get_build_id()
+        self.extraattr_set.create(
+            name = 'jenkins_build_id',
+            value = build_id
+        )
+
+    def get_jenkins_params(self):
+        current_site = Site.objects.get_current()
+        patch_urls = []
+        components = self.build.component.all()
+        for component in components:
+            if component.patch_file:
+                patch_urls.append('http://%s%s' % (
+                    current_site,
+                    component.patch_file.url,
+                ))
+        return {
+            "PRODUCT": self.build.product.name,
+            "BASELINE":self.build.baseline.name,
+            "PATCH_URL": ' '.join(patch_urls),
+            "VARIANT": "eng",
+        }
 
     # TODO: Move related build features from Build to Process
 
@@ -294,8 +313,8 @@ class Process(models.Model):
         progress = float((now - self.started_at).seconds)/estimated_seconds*100
         remaining_seconds = estimated_seconds  - (now - self.started_at).seconds
         remaining_str = timedelta(seconds=remaining_seconds)
-        if remaining_seconds < 0 or progress > 100:
-            progress, remaining_seconds = 100, 0
+        if remaining_seconds < 0 or progress > 99:
+            progress, remaining_seconds = 99, 0
         if progress == 100 and commit:
             self.status = 'Completed'
         if commit:
@@ -304,8 +323,13 @@ class Process(models.Model):
             self.save()
         return progress, remaining_seconds
 
+class ExtraAttr(models.Model):
+    process = models.ForeignKey(Process)
+    name = models.CharField(max_length=11)
+    value = models.CharField(max_length=11)
+
 def component_form_post_save_handler(sender, instance, **kwargs):
-    instance.create_build_job()
+    instance.create_build_process()
     if instance.has_components:
         instance.create_patches_package()
 
@@ -317,7 +341,7 @@ def update_process_handler(sender, instance, **kwargs):
         if process.progress == 100 or not process.started_at:
             continue
         progress, remaining_seconds = process.get_progress(commit=True)
-        if process.type == 'Build':
+        if not jenkins_handler:
             if progress == 100:
                 # Fake data
                 if instance.has_components:
@@ -325,6 +349,25 @@ def update_process_handler(sender, instance, **kwargs):
                 else:
                     process.url = '/media/default/baylake-eng-fastboot-eng.chenxf.zip'
             process.save()
+            return
+        else:
+            # Do jenkins work
+            jenkins_build_ids = instance.process_set.get(type = 'Build').extraattr_set.filter(name = 'jenkins_build_id')
+            if jenkins_build_ids:
+                jenkins_build_id = jenkins_build_ids[0].value
+            else:
+                return
+            jenkins_handler.get_build(id = int(jenkins_build_id))
+            is_completed, status = jenkins_handler.is_complete()
+            if is_completed == 200: # Succeed
+                process.progress = 100
+                process.url = jenkins_handler.get_build_results()
+                process.get_progress(commit=True)
+            elif is_completed == 500: # Failure
+                process.progress = 100
+                process.status = status
+                process.url = None
+                process.save()                
 
 def post_patches_package_create_handler(sender, instance, patches_package, **kwargs):
     url = 'http://%s%s' % (
