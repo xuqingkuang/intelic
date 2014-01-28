@@ -374,7 +374,7 @@ def update_process_handler(sender, instance, **kwargs):
                 process.save()                
 
 def post_patches_package_create_handler(sender, instance, patches_package, **kwargs):
-    url = 'http://%s%s:8000' % (
+    url = 'http://%s:8000%s' % (
         Site.objects.get_current(),
         instance.generate_patches_package_name(root = settings.MEDIA_URL)
     )
