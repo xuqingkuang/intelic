@@ -5,6 +5,7 @@ from django.views.generic.base import TemplateView
 from django.http import HttpResponseRedirect, HttpResponse
 from django.utils.translation import ugettext as _
 from intelic.account.views import LoginRequiredMixin
+from pprint import pprint 
 
 import os.path
 import models, forms
@@ -30,6 +31,12 @@ class BuildCreateView(LoginRequiredMixin, TitleMixin, CreateView):
     model = models.Build
     title = _('Build create')
     form_class = forms.BuildCreateModelForm
+
+    def get_form_kwargs(self):
+        # pass "user" keyword argument with the current user to your form
+        kwargs = super(BuildCreateView, self).get_form_kwargs()
+        kwargs['initial']['author'] = self.request.user
+        return kwargs
 
     def get_form(self, form_class):
         form = super(BuildCreateView, self).get_form(form_class)

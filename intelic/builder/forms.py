@@ -1,14 +1,19 @@
 from django import forms
+from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 import models
 from pprint import pprint
 
 class BuildCreateModelForm(forms.ModelForm):
+    author    = forms.ModelChoiceField(
+        queryset = User.objects.all(),
+        widget = forms.HiddenInput()
+    )
     baseline  = forms.ModelChoiceField(queryset = models.Baseline.objects.none())
 
     class Meta:
         model = models.Build
-        fields = ('product', 'pmic', 'baseline')
+        fields = ('author', 'product', 'pmic', 'baseline')
 
     def __init__(self, *args, **kwargs):
         super(BuildCreateModelForm, self).__init__(*args, **kwargs)

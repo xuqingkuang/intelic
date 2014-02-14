@@ -149,6 +149,7 @@ class Component(BaseModel):
 # ##################################################
 
 class Build(BaseModel):
+    author          = models.ForeignKey('auth.User')
     product         = models.ForeignKey(Product, verbose_name=_('SOC'))
     pmic            = models.ForeignKey(
         PMIC, verbose_name=_('PMIC'), blank=True, null=True
