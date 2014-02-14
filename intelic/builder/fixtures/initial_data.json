@@ -19,6 +19,17 @@
     }
 },
 {
+    "pk": 2, 
+    "model": "builder.product", 
+    "fields": {
+        "form_class": 1, 
+        "desc": "", 
+        "is_active": true, 
+        "name": "BayTrail-CR", 
+        "slug": "baytrail-cr"
+    }
+},
+{
     "pk": 1, 
     "model": "builder.pmic", 
     "fields": {
@@ -39,6 +50,19 @@
         "is_active": true, 
         "name": "WW34", 
         "slug": "ww34"
+    }
+},
+{
+    "pk": 2, 
+    "model": "builder.baseline", 
+    "fields": {
+        "product": [
+            2
+        ], 
+        "desc": "", 
+        "is_active": true, 
+        "name": "br-2013-ww52", 
+        "slug": "ww52"
     }
 },
 {
@@ -191,6 +215,23 @@
     "fields": {
         "name": "UV Sensor", 
         "slug": "uv_sensor"
+    }
+},
+{
+    "pk": 20, 
+    "model": "builder.componenttype", 
+    "fields": {
+        "name": "SoC", 
+        "slug": "soc"
+    }
+},
+{
+    "pk": 1, 
+    "model": "builder.defaultcomponentvalue", 
+    "fields": {
+        "default_value": "NULL", 
+        "product": 2, 
+        "component_type": 20
     }
 },
 {
@@ -513,6 +554,139 @@
         "gerrit_url": "", 
         "type": 4, 
         "slug": "panel-panasonic-vvx10t014m00-101-edp-25x14-24bit", 
+        "desc": ""
+    }
+},
+{
+    "pk": 18, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            1
+        ], 
+        "name": "CPT, CLAA080WQ02, 8\" 8x12 MIPI 1x4", 
+        "baseline": [
+            1
+        ], 
+        "is_active": true, 
+        "patch_file": "uploads/patches/8panel.patch", 
+        "gerrit_url": "", 
+        "type": 4, 
+        "slug": "panel-cpt-claa080wq02-8-8x12-mipi-1x4", 
+        "desc": ""
+    }
+},
+{
+    "pk": 25, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            2
+        ], 
+        "name": "Focaltek  FT5506", 
+        "baseline": [
+            2
+        ], 
+        "is_active": true, 
+        "patch_file": "uploads/patches/ft5506.tar.gz", 
+        "gerrit_url": "", 
+        "type": 3, 
+        "slug": "touch-focaltek-ft5506", 
+        "desc": ""
+    }
+},
+{
+    "pk": 28, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            2
+        ], 
+        "name": "5MP 1/4\"  OV5693 LiteOn 12P2BA535", 
+        "baseline": [
+            2
+        ], 
+        "is_active": true, 
+        "patch_file": "uploads/patches/ov5693.tar.gz", 
+        "gerrit_url": "", 
+        "type": 7, 
+        "slug": "camera-module-2-5mp-14-ov5693-liteon-12p2ba535", 
+        "desc": ""
+    }
+},
+{
+    "pk": 30, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            2
+        ], 
+        "name": "GPS, GLONASS, MB down Broadcom BCM4752", 
+        "baseline": [
+            2
+        ], 
+        "is_active": true, 
+        "patch_file": "uploads/patches/bcm4752.tar.gz", 
+        "gerrit_url": "", 
+        "type": 9, 
+        "slug": "gps-gps-glonass-mb-down-broadcom-bcm4752", 
+        "desc": ""
+    }
+},
+{
+    "pk": 32, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            2
+        ], 
+        "name": "TI TLV320AIC3100", 
+        "baseline": [
+            2
+        ], 
+        "is_active": true, 
+        "patch_file": "uploads/patches/tlv320aic31xx.tar.gz", 
+        "gerrit_url": "", 
+        "type": 5, 
+        "slug": "codec-ti-tlv320aic3100", 
+        "desc": ""
+    }
+},
+{
+    "pk": 33, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            2
+        ], 
+        "name": "Huawei MU736 (XMM6260)", 
+        "baseline": [
+            2
+        ], 
+        "is_active": true, 
+        "patch_file": "uploads/patches/mu736.tar.gz", 
+        "gerrit_url": "", 
+        "type": 11, 
+        "slug": "wwan-huawei-mu736-xmm6260", 
+        "desc": ""
+    }
+},
+{
+    "pk": 40, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            2
+        ], 
+        "name": "A+ M Combo ST Micro LSM303DLHC", 
+        "baseline": [
+            2
+        ], 
+        "is_active": true, 
+        "patch_file": "uploads/patches/st_acc_gyro_compass.tar.gz", 
+        "gerrit_url": "", 
+        "type": 14, 
+        "slug": "gyro-sensor-a-m-combo-st-micro-lsm303dlhc", 
         "desc": ""
     }
 }

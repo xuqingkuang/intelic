@@ -7,11 +7,12 @@ from django.utils import timezone
 from django.contrib.sites.models import Site
 
 from datetime import timedelta
+from pprint import pprint
 
-from intelic.jenkins_handler import jenkins_handler
+from intelic.jenkins_handler import JenkinsHandler
 import os, zipfile, signals
 
-from pprint import pprint
+DEFAULT_PORT = 8000
 
 # Create your models here.
 
@@ -271,8 +272,12 @@ class Process(models.Model):
         self.save()
 
     def create_jenkins_job(self):
-        if not jenkins_handler:
+        if not getattr(settings, 'JENKINS_HOST'):
             return
+        jenkins_handler = JenkinsHandler(
+            settings.JENKINS_HOST, settings.JENKINS_USERNAME,
+            settings.JENKINS_PASSWORD
+        )
         params = self.get_jenkins_params()
         jenkins_handler.trigger(params)
         build_id = jenkins_handler.get_build_id()
@@ -287,8 +292,9 @@ class Process(models.Model):
         components = self.build.component.all()
         for component in components:
             if component.patch_file:
-                patch_urls.append('http://%s%s' % (
+                patch_urls.append('http://%s:%s%s' % (
                     current_site,
+                    DEFAULT_PORT,
                     component.patch_file.url,
                 ))
         return {
@@ -302,7 +308,10 @@ class Process(models.Model):
 
     def get_progress(self, commit=False):
         now =  timezone.now()
-        estimated_seconds = 60
+        if not getattr(settings, 'JENKINS_HOST'):
+            estimated_seconds = 60
+        else:
+            estimated_seconds = 7200
         max_percents = {
             'Build': 99,
             'Package': 100,
@@ -314,7 +323,7 @@ class Process(models.Model):
                 estimated_seconds = 10000
                 break
         if self.type == 'Package':
-            estimated_seconds = 30
+            estimated_seconds = 1
         progress = float((now - self.started_at).seconds)/estimated_seconds*100
         remaining_seconds = estimated_seconds  - (now - self.started_at).seconds
         remaining_str = timedelta(seconds=remaining_seconds)
@@ -342,8 +351,16 @@ def update_process_handler(sender, instance, **kwargs):
     # Fake data here
     now = timezone.now()
     processes = instance.process_set.all()
+
+    if not getattr(settings, 'JENKINS_HOST'):
+        return
+    jenkins_handler = JenkinsHandler(
+        settings.JENKINS_HOST, settings.JENKINS_USERNAME,
+        settings.JENKINS_PASSWORD
+    )
+
     for process in processes:
-        if process.progress == 100 or not process.started_at:
+        if not process.started_at:
             continue
         progress, remaining_seconds = process.get_progress(commit=True)
         if not jenkins_handler:
@@ -367,17 +384,21 @@ def update_process_handler(sender, instance, **kwargs):
             if is_completed == 200: # Succeed
                 process.progress = 100
                 process.url = jenkins_handler.get_build_results()
-                process.get_progress(commit=True)
+                process.status = 'Completed'
+                process.save()
             elif is_completed == 500: # Failure
                 process.progress = 100
                 process.status = status
                 process.url = None
-                process.save()                
+                process.save()   
+            else:
+                process.get_progress(commit=True)
 
 def post_patches_package_create_handler(sender, instance, patches_package, **kwargs):
-    url = 'http://%s:8000%s' % (
+    url = 'http://%s:%s%s' % (
         Site.objects.get_current(),
-        instance.generate_patches_package_name(root = settings.MEDIA_URL)
+        DEFAULT_PORT,
+        instance.generate_patches_package_name()
     )
     instance.process_set.filter(type = 'Package').update(url = url)
 

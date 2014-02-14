@@ -1,5 +1,6 @@
 from django.conf import settings
 from jenkinsapi.jenkins import Jenkins
+from pprint import pprint
 
 class JenkinsErrorException(Exception):
   pass
@@ -34,7 +35,7 @@ class JenkinsHandler(object):
         """
         Get the build ID
         """
-        return self.invoke.get_build_number()
+        return self.invoke.get_build_number() + 1
 
     def get_build_log(self):
         return self.build.baseurl + '/console'
@@ -50,11 +51,3 @@ class JenkinsHandler(object):
         elif not self.build.is_good():
             return 500, 'Failure'
         return 200, 'Success'
-
-if getattr(settings, 'JENKINS_HOST'):
-    jenkins_handler = JenkinsHandler(
-        settings.JENKINS_HOST, settings.JENKINS_USERNAME,
-        settings.JENKINS_PASSWORD
-    )
-else:
-    jenkins_handler = None
