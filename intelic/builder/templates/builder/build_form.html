@@ -41,6 +41,22 @@
     <a href="#" data-dismiss="modal" aria-hidden="true" class="btn">{% trans "Close" %}</a>
   </div>
 </div>
+
+{% if not can_create_build %}
+<div id="myModal" class="modal hide fade" data-backdrop=true>
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>{% trans "User is not able to create second job while running" %}</h3>
+  </div>
+  <div class="modal-body">
+    <p>{% trans "You have to waiting for your running build finished." %}</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+  </div>
+</div>
+{% endif %}
+
 {% endblock %}
 
 {% block js_footer %}
@@ -203,5 +219,11 @@
             $('#createBuildForm').trigger('change');
         });
     });
+
+{% if not can_create_build %}
+    $('input').prop('disabled', true);
+    $('#myModal').modal('show')
 </script>
+{% endif %}
 {% endblock %}
+

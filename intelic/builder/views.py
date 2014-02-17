@@ -4,6 +4,7 @@ from django.views.generic.detail import BaseDetailView, DetailView
 from django.views.generic.base import TemplateView
 from django.http import HttpResponseRedirect, HttpResponse
 from django.utils.translation import ugettext as _
+from django.db.models import Q
 from intelic.account.views import LoginRequiredMixin
 from pprint import pprint 
 
@@ -31,6 +32,13 @@ class BuildCreateView(LoginRequiredMixin, TitleMixin, CreateView):
     model = models.Build
     title = _('Build create')
     form_class = forms.BuildCreateModelForm
+
+    def get_context_data(self, **kwargs):
+        context = super(BuildCreateView, self).get_context_data(**kwargs)
+        context['can_create_build'] = models.Process.objects.filter(
+            build__author = self.request.user, type = 'Build', status = 'Processing'
+        ).count() == 0
+        return context
 
     def get_form_kwargs(self):
         # pass "user" keyword argument with the current user to your form

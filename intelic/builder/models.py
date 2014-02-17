@@ -256,7 +256,7 @@ class Process(models.Model):
         verbose_name_plural = _('Processes')
 
     def __unicode__(self):
-        return self.url
+        return '%s-%s-%s' % (self.build.name, self.type, self.status)
 
     def start(self):
         self.progress = 0
