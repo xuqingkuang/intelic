@@ -389,6 +389,7 @@ def update_process_handler(sender, instance, **kwargs):
             elif is_completed == 500: # Failure
                 process.progress = 100
                 process.status = status
+                process.message = 'Build failed, please check your settings or code.'
                 process.url = None
                 process.save()   
             else:

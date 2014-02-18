@@ -38,8 +38,12 @@
                 <div class="bar" style="width: {{ process.progress }}%;"></div>
             </div>
         </div>
-        {% ifequal process.progress 100 %}
+        {% ifequal process.progress 100  %}
+        {% ifequal process.status 'Completed' %}
         <div class="span1"><a href="{{ process.url }}" class="btn">{% trans "Download" %}</a></div>
+        {% else %}
+        <div class="span1">{{ process.message }}</div>
+        {% endifequal %}
         {% else %}
         <div class="span1">
             <a href="javascript:void(0)" data-pk="{{ process.pk }}" data-action="cancel" class="btn">{% trans "Cancel" %}</a>
