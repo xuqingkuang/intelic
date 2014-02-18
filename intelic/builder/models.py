@@ -316,12 +316,6 @@ class Process(models.Model):
             'Build': 99,
             'Package': 100,
         }
-        # FIXME: Ugly code here for demo.
-        component_ids = self.build.component.values_list('pk', flat=True)
-        for id in component_ids:
-            if id > 14 and id != 17:
-                estimated_seconds = 10000
-                break
         if self.type == 'Package':
             estimated_seconds = 1
         progress = float((now - self.started_at).seconds)/estimated_seconds*100
