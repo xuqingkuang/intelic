@@ -311,7 +311,7 @@ class Process(models.Model):
         if not getattr(settings, 'JENKINS_HOST'):
             estimated_seconds = 60
         else:
-            estimated_seconds = 7200
+            estimated_seconds = 3000
         max_percents = {
             'Build': 99,
             'Package': 100,
@@ -363,6 +363,10 @@ def update_process_handler(sender, instance, **kwargs):
         if not process.started_at:
             continue
         progress, remaining_seconds = process.get_progress(commit=True)
+        # Skip package process
+        if process.type == 'Package':
+            continue
+        # Do build job
         if not jenkins_handler:
             if progress == 100:
                 # Fake data
@@ -391,9 +395,7 @@ def update_process_handler(sender, instance, **kwargs):
                 process.status = status
                 process.message = 'Build failed, please check your settings or code.'
                 process.url = None
-                process.save()   
-            else:
-                process.get_progress(commit=True)
+                process.save()
 
 def post_patches_package_create_handler(sender, instance, patches_package, **kwargs):
     url = 'http://%s:%s%s' % (

@@ -42,7 +42,7 @@
         {% ifequal process.status 'Completed' %}
         <div class="span1"><a href="{{ process.url }}" class="btn">{% trans "Download" %}</a></div>
         {% else %}
-        <div class="span1">{{ process.message }}</div>
+        <div class="span3">{{ process.message }}</div>
         {% endifequal %}
         {% else %}
         <div class="span1">
