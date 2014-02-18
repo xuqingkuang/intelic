@@ -689,5 +689,165 @@
         "slug": "gyro-sensor-a-m-combo-st-micro-lsm303dlhc", 
         "desc": ""
     }
+},
+{
+    "pk": 41, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            2
+        ], 
+        "name": "KIONIX KXTJ2-1009 Capella CM3232A30G AK8963C", 
+        "baseline": [
+            2
+        ], 
+        "is_active": true, 
+        "patch_file": "uploads/patches/aic_a.tar.gz", 
+        "gerrit_url": "", 
+        "type": 13, 
+        "slug": "als-sensor-kionix-kxtj2-1009-capella-cm3232a30g-ak8963c", 
+        "desc": ""
+    }
+},
+{
+    "pk": 42, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            2
+        ], 
+        "name": "AMPAK AP6210 (BCM43362+20710) 1x1 bgn + BT4.0", 
+        "baseline": [
+            2
+        ], 
+        "is_active": true, 
+        "patch_file": "uploads/patches/ap6210.tar.gz", 
+        "gerrit_url": "", 
+        "type": 8, 
+        "slug": "wifibt-ampak-ap6210-bcm4336220710-1x1-bgn-bt40", 
+        "desc": ""
+    }
+},
+{
+    "pk": 43, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            2
+        ], 
+        "name": "Parade PS8622 10.\" 13x7 CPT  CLAA101WJ06", 
+        "baseline": [
+            2
+        ], 
+        "is_active": true, 
+        "patch_file": "uploads/patches/edp-ps8622.tar.gz", 
+        "gerrit_url": "", 
+        "type": 4, 
+        "slug": "panel-parade-ps8622-10-13x7-cpt-claa101wj06", 
+        "desc": ""
+    }
+},
+{
+    "pk": 44, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            2
+        ], 
+        "name": "Goodix GT928", 
+        "baseline": [
+            2
+        ], 
+        "is_active": true, 
+        "patch_file": "uploads/patches/gt928.tar.gz", 
+        "gerrit_url": "", 
+        "type": 3, 
+        "slug": "touch-goodix-gt928", 
+        "desc": ""
+    }
+},
+{
+    "pk": 45, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            2
+        ], 
+        "name": "3G, Intel XMM6260, SIP, N.America Fibocomm H350", 
+        "baseline": [
+            2
+        ], 
+        "is_active": true, 
+        "patch_file": "uploads/patches/h350.tar.gz", 
+        "gerrit_url": "", 
+        "type": 11, 
+        "slug": "wwan-3g-intel-xmm6260-sip-namerica-fibocomm-h350", 
+        "desc": ""
+    }
+},
+{
+    "pk": 46, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            2
+        ], 
+        "name": "7.85\" MIPI 1024x768 KingDisplay KD079D1-35NA-A8", 
+        "baseline": [
+            2
+        ], 
+        "is_active": true, 
+        "patch_file": "uploads/patches/mipi-kd079d1.tar.gz", 
+        "gerrit_url": "", 
+        "type": 4, 
+        "slug": "panel-785-mipi-1024x768-kingdisplay-kd079d1-35na-a8", 
+        "desc": ""
+    }
+},
+{
+    "pk": 47, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            2
+        ], 
+        "name": "1.26M Aptina 1040 LiteOn 12P2SF181A", 
+        "baseline": [
+            2
+        ], 
+        "is_active": true, 
+        "patch_file": "uploads/patches/mt9m114.tar.gz", 
+        "gerrit_url": "", 
+        "type": 6, 
+        "slug": "camera-module-1-126m-aptina-1040-liteon-12p2sf181a", 
+        "desc": ""
+    }
+},
+{
+    "pk": 48, 
+    "model": "builder.component", 
+    "fields": {
+        "product": [
+            2
+        ], 
+        "name": "Realtek ALC5642", 
+        "baseline": [
+            2
+        ], 
+        "is_active": true, 
+        "patch_file": "uploads/patches/rt5642.tar.gz", 
+        "gerrit_url": "", 
+        "type": 5, 
+        "slug": "codec-realtek-alc5642", 
+        "desc": ""
+    }
+},
+{
+    "pk": 1, 
+    "model": "sites.site", 
+    "fields": {
+        "domain": "27.115.111.138", 
+        "name": "27.115.111.138"
+    }
 }
 ]
