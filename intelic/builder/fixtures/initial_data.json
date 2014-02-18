@@ -841,13 +841,5 @@
         "slug": "codec-realtek-alc5642", 
         "desc": ""
     }
-},
-{
-    "pk": 1, 
-    "model": "sites.site", 
-    "fields": {
-        "domain": "27.115.111.138", 
-        "name": "27.115.111.138"
-    }
 }
 ]

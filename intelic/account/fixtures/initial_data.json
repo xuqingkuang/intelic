@@ -52,5 +52,31 @@
         "email": "", 
         "date_joined": "2013-11-22T13:34:40.899Z"
     }
+},
+{
+    "pk": 4, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "demo", 
+        "first_name": "demo", 
+        "last_name": "demo", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2014-02-18T08:59:30.616Z", 
+        "groups": [], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$8F84OP4WqZwH$7DryVv4lly44rYVtNWbp4TaUDwbs88RO5N96Eahp1Zg=", 
+        "email": "xutao0901@thundersoft.com", 
+        "date_joined": "2014-02-17T08:44:36Z"
+    }
+},
+{
+    "pk": 1, 
+    "model": "sites.site", 
+    "fields": {
+        "domain": "27.115.111.138", 
+        "name": "27.115.111.138"
+    }
 }
 ]
