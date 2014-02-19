@@ -21,8 +21,11 @@
     <div class="control-group">
         <div class="controls">
             <input type="submit" value="{% trans "Next" %}" class="btn btn-primary" />
+            <input id="btnClear" type="button" value="{% trans "Default" %}" class="btn" />
+            {% comment %}
             <input id="btnClear" type="button" value="{% trans "Clear" %}" class="btn" />
             <input id="btnDefault" type="button" value="{% trans "Default" %}" class="btn" disabled />
+            {% endcomment %}
             <input id="btnPopupDownloadComponentList" type="button" value="{% trans "Download component list" %}" class="btn" disabled />
         </div>
     </div>
