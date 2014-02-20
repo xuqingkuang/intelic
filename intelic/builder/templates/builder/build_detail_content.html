@@ -64,7 +64,7 @@
             </div>
         </div>
         <div class="span1">
-            {% ifequal process.status "Processing" }
+            {% ifequal process.status "Processing" %}
             <a href="javascript:void(0)" data-pk="{{ process.pk }}" data-action="cancel" class="btn">{% trans "Cancel" %}</a>
             {% else %}
             <a href="javascript:void(0)" data-pk="{{ process.pk }}"  data-action="start" class="btn">{% trans "Build" %}</a>
