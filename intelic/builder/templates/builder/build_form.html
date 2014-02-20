@@ -21,11 +21,8 @@
     <div class="control-group">
         <div class="controls">
             <input type="submit" value="{% trans "Next" %}" class="btn btn-primary" />
-            <input id="btnClear" type="button" value="{% trans "Default" %}" class="btn" />
-            {% comment %}
             <input id="btnClear" type="button" value="{% trans "Clear" %}" class="btn" />
             <input id="btnDefault" type="button" value="{% trans "Default" %}" class="btn" disabled />
-            {% endcomment %}
             <input id="btnPopupDownloadComponentList" type="button" value="{% trans "Download component list" %}" class="btn" disabled />
         </div>
     </div>
@@ -157,11 +154,15 @@
         $('#componentContainer').find('select').each(function() {
             var $self = $(this),
                 $options = $self.find('option');
+            /*
             if ($options.length < 2) {
                 return 'continue';
             }
             $options.removeAttr('selected');
             $($options[1]).attr('selected', 'selected');
+            */
+            
+            $self.val('');
         });
         $('#createBuildForm').trigger('change');
     });
