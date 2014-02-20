@@ -348,12 +348,14 @@ def update_process_handler(sender, instance, **kwargs):
     now = timezone.now()
     processes = instance.process_set.all()
 
-    if not getattr(settings, 'JENKINS_HOST'):
-        return
-    jenkins_handler = JenkinsHandler(
-        settings.JENKINS_HOST, settings.JENKINS_USERNAME,
-        settings.JENKINS_PASSWORD
-    )
+    
+    if getattr(settings, 'JENKINS_HOST'):
+        jenkins_handler = JenkinsHandler(
+            settings.JENKINS_HOST, settings.JENKINS_USERNAME,
+            settings.JENKINS_PASSWORD
+        )
+    else:
+        jenkins_handler = None
 
     for process in processes:
         if not process.started_at:
@@ -372,26 +374,25 @@ def update_process_handler(sender, instance, **kwargs):
                     process.url = '/media/default/baylake-eng-fastboot-eng.chenxf.zip'
             process.save()
             return
+        # Do jenkins work
+        jenkins_build_ids = instance.process_set.get(type = 'Build').extraattr_set.filter(name = 'jenkins_build_id')
+        if jenkins_build_ids:
+            jenkins_build_id = jenkins_build_ids[0].value
         else:
-            # Do jenkins work
-            jenkins_build_ids = instance.process_set.get(type = 'Build').extraattr_set.filter(name = 'jenkins_build_id')
-            if jenkins_build_ids:
-                jenkins_build_id = jenkins_build_ids[0].value
-            else:
-                return
-            jenkins_handler.get_build(id = int(jenkins_build_id))
-            is_completed, status = jenkins_handler.is_complete()
-            if is_completed == 200: # Succeed
-                process.progress = 100
-                process.url = jenkins_handler.get_build_results()
-                process.status = 'Completed'
-                process.save()
-            elif is_completed == 500: # Failure
-                process.progress = 100
-                process.status = status
-                process.message = 'Build failed, please check your settings or code.'
-                process.url = None
-                process.save()
+            return
+        jenkins_handler.get_build(id = int(jenkins_build_id))
+        is_completed, status = jenkins_handler.is_complete()
+        if is_completed == 200: # Succeed
+            process.progress = 100
+            process.url = jenkins_handler.get_build_results()
+            process.status = 'Completed'
+            process.save()
+        elif is_completed == 500: # Failure
+            process.progress = 100
+            process.status = status
+            process.message = 'Build failed, please check your settings or code.'
+            process.url = None
+            process.save()
 
 def post_patches_package_create_handler(sender, instance, patches_package, **kwargs):
     url = 'http://%s:%s%s' % (
