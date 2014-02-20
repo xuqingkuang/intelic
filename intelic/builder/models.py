@@ -179,7 +179,7 @@ class Build(BaseModel):
     def create_build_process(self):
         self.process_set.create(
             type = 'Build',
-            status = 'Processing',
+            status = 'Not started yet',
             progress = 0
         )
 
@@ -261,6 +261,7 @@ class Process(models.Model):
     def start(self):
         self.progress = 0
         self.started_at = timezone.now()
+        self.status = 'Processing'
         self.save()
         
         if self.type == 'Build':
@@ -269,6 +270,7 @@ class Process(models.Model):
     def cancel(self):
         self.progress = 0
         self.started_at = None
+        self.status = 'Not started yet'
         self.save()
 
     def create_jenkins_job(self):
