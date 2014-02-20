@@ -42,14 +42,19 @@
   </div>
 </div>
 
-{% if not can_create_build %}
+{% if running_processes %}
 <div id="myModal" class="modal hide fade" data-backdrop=true>
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <h3>{% trans "User is not able to create second job while running" %}</h3>
   </div>
   <div class="modal-body">
-    <p>{% trans "You have to waiting for your running build finished." %}</p>
+    <p>{% trans "Following build still running, please waiting for them completed or cancel it." %}</p>
+    <ul>
+      {% for process in running_processes %}
+      <li><a href="{{ process.build.get_absolute_url }}">{{ process.build }}</a></li>
+      {% endfor %}
+    </ul>
   </div>
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>

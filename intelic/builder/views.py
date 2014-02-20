@@ -35,9 +35,9 @@ class BuildCreateView(LoginRequiredMixin, TitleMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(BuildCreateView, self).get_context_data(**kwargs)
-        context['can_create_build'] = models.Process.objects.filter(
+        context['running_processes'] = models.Process.objects.filter(
             build__author = self.request.user, type = 'Build', status = 'Processing'
-        ).count() == 0
+        ).select_related('build')
         return context
 
     def get_form_kwargs(self):
