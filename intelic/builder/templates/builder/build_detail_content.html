@@ -64,8 +64,12 @@
             </div>
         </div>
         <div class="span1">
+            {% ifequal process.type "Build" %}
             {% ifequal process.status "Processing" %}
             <a href="javascript:void(0)" data-pk="{{ process.pk }}" data-action="cancel" class="btn">{% trans "Cancel" %}</a>
+            {% else %}
+            <a href="javascript:void(0)" data-pk="{{ process.pk }}"  data-action="start" class="btn">{% trans "Build" %}</a>
+            {% endifequal %}
             {% else %}
             <a href="javascript:void(0)" data-pk="{{ process.pk }}"  data-action="start" class="btn">{% trans "Build" %}</a>
             {% endifequal %}
