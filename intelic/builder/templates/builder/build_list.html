@@ -71,7 +71,7 @@
 
 {% block js_footer %}
 <script type="text/javascript" charset="utf-8">
-$('tr').click(function(e) {
+$('tbody tr').click(function(e) {
     window.location.href=$(this).attr('data-url');
 })
 </script>
