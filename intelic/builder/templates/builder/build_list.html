@@ -23,6 +23,7 @@
     <thead>
         <tr>
             <th>{% trans "Name" %}</th>
+            <th>{% trans "Author" %}</th>
             <th>{% trans "SOC" %}</th>
             <th>{% trans "PMIC" %}</th>
             <th>{% trans "Baseline" %}</th>
@@ -33,6 +34,7 @@
         {% for build in builds %}
         <tr data-url="{{ build.get_absolute_url }}">
             <td><a hef="{{ build.get_absolute_url }}">{{ build }}</a></td>
+            <td>{{ build.author }}</td>
             <td>{{ build.product }}</td>
             <td>{{ build.pmic }}</td>
             <td>{{ build.baseline }}</td>
