@@ -49,7 +49,7 @@
     <h3>{% trans "User is not able to create second job while running" %}</h3>
   </div>
   <div class="modal-body">
-    <p>{% trans "Following build still running, please waiting for them completed or cancel it." %}</p>
+    <p>{% trans "Following build still running, please waiting for it completed or cancel it." %}</p>
     <ul>
       {% for process in running_processes %}
       <li><a href="{{ process.build.get_absolute_url }}">{{ process.build }}</a></li>
