@@ -53,7 +53,7 @@
         </div>
         {% endifequal %}
         {% else %}
-        <div class="span2">{% trans "Not started yet" %}</div>
+        <div class="span2">{{ process.status }}</div>
         <div class="span3">
             <div class="progress progress-striped active">
                 <div class="bar" style="width: 0%;"></div>
