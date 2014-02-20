@@ -53,14 +53,22 @@
         </div>
         {% endifequal %}
         {% else %}
+        {% ifequal process.type "Package" %}
+        <div class="span2">Not started yet</div>
+        {% else %}
         <div class="span2">{{ process.status }}</div>
+        {% endifequal %}
         <div class="span3">
             <div class="progress progress-striped active">
                 <div class="bar" style="width: 0%;"></div>
             </div>
         </div>
         <div class="span1">
+            {% ifequal process.status "Processing" }
+            <a href="javascript:void(0)" data-pk="{{ process.pk }}" data-action="cancel" class="btn">{% trans "Cancel" %}</a>
+            {% else %}
             <a href="javascript:void(0)" data-pk="{{ process.pk }}"  data-action="start" class="btn">{% trans "Build" %}</a>
+            {% endifequal %}
         </div>
         {% endif %}
     </div>
