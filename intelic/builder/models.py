@@ -398,7 +398,7 @@ def post_patches_package_create_handler(sender, instance, patches_package, **kwa
     url = 'http://%s:%s%s' % (
         Site.objects.get_current(),
         DEFAULT_PORT,
-        instance.generate_patches_package_name()
+        instance.generate_patches_package_name(root = settings.MEDIA_URL)
     )
     instance.process_set.filter(type = 'Package').update(url = url)
 
